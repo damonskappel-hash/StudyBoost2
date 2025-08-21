@@ -3,6 +3,7 @@
 import { useUser, useAuth } from '@clerk/nextjs'
 import { useQuery, useMutation, useAction } from 'convex/react'
 import { api } from '../../../convex/_generated/api'
+import type { Id } from '../../../convex/_generated/dataModel'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -35,7 +36,7 @@ export default function EnhancedNotePage() {
   const { user } = useUser()
   const { has } = useAuth()
   const params = useParams()
-  const noteId = params.noteId as string
+  const noteId = params.noteId as unknown as Id<'notes'>
   const toast = useToast()
   const [activeTab, setActiveTab] = useState<'original' | 'enhanced' | 'split' | 'ai'>('split')
   const [aiLoading, setAiLoading] = useState(false)
