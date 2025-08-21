@@ -154,34 +154,34 @@ export default function EnhancePage() {
         throw new Error(errorData.error || 'Failed to enhance note')
       }
 
-      const result = await response.json()
+      const enhancementRes = await response.json()
 
-      if (!result.success) {
-        throw new Error(result.error || 'Enhancement failed')
+      if (!enhancementRes.success) {
+        throw new Error(enhancementRes.error || 'Enhancement failed')
       }
 
       setProgress(80)
 
       // Update note with enhanced content
-      await enhanceNote(noteId, result.enhancedContent, result.processingTime)
+      await enhanceNote(noteId, enhancementRes.enhancedContent, enhancementRes.processingTime)
       setProgress(85)
 
       // Automatically generate flashcards if enabled
       if (enhancementSettings.autoGenerateFlashcards && (has?.({ plan: 'student' }) || has?.({ plan: 'pro' }))) {
         try {
           // Generate flashcards using the action
-          const result = await generateFlashcardsAction({
-            content: result.enhancedContent,
+          const flashResult = await generateFlashcardsAction({
+            content: enhancementRes.enhancedContent,
             subject: subject,
             numCards: 10 // Generate 10 flashcards automatically
           })
 
-          if (result.success && result.data?.flashcards) {
+          if (flashResult.success && flashResult.data?.flashcards) {
             // Create flashcards in the database
             await createFlashcards({
               noteId: noteId,
               subject: subject,
-              flashcards: result.data.flashcards
+              flashcards: flashResult.data.flashcards
             })
             toast.success('Generated flashcards automatically!')
           }
