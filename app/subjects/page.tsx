@@ -155,7 +155,7 @@ export default function SubjectsPage() {
       if (result.success && result.data) {
         setSubjectQuiz(prev => ({ ...prev, [subject]: result.data.questions }))
         setQuizAnswers(prev => ({ ...prev, [subject]: new Array(result.data.questions.length).fill(-1) }))
-        setQuizResults(prev => ({ ...prev, [subject]: null }))
+        setQuizResults(prev => ({ ...prev, [subject]: { correct: 0, total: 0 } }))
         setShowQuiz(subject)
         toast.success("Subject quiz generated successfully!")
       } else {
