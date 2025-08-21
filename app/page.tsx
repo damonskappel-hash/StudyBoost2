@@ -7,6 +7,8 @@ import { SignInButton, UserButton } from '@clerk/nextjs'
 import { Authenticated, Unauthenticated } from 'convex/react'
 import { ArrowRight, Brain, FileText, Sparkles, Zap, BookOpen, Users, Star } from "lucide-react"
 import Link from "next/link"
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 export default function Home() {
   return (
@@ -23,10 +25,12 @@ export default function Home() {
 }
 
 function DashboardRedirect() {
-  // Redirect to dashboard immediately
-  if (typeof window !== 'undefined') {
-    window.location.href = '/dashboard'
-  }
+  const router = useRouter()
+  
+  useEffect(() => {
+    // Use Next.js router for client-side navigation
+    router.push('/dashboard')
+  }, [router])
   
   // Fallback loading state
   return (
