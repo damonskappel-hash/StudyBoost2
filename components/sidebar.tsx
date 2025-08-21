@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
-import { UserButton } from "@clerk/nextjs"
 import {
   Brain,
   BookOpen,
@@ -98,18 +97,6 @@ export function Sidebar() {
         {/* Theme Toggle */}
         <div className="flex justify-center">
           <ThemeToggle />
-        </div>
-
-        {/* User Button */}
-        <div className="flex justify-center">
-          <UserButton 
-            appearance={{
-              elements: {
-                userButtonBox: "h-8 w-8",
-                userButtonTrigger: "h-8 w-8 rounded-lg"
-              }
-            }}
-          />
         </div>
       </div>
     </div>
