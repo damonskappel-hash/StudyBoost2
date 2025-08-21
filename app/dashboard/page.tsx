@@ -124,39 +124,6 @@ export default function Dashboard() {
           </p>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <Card className="border border-border bg-card shadow-sm">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Completed</CardTitle>
-                <div className="p-1.5 bg-primary/10 rounded-lg">
-                  <CheckCircle className="h-3.5 w-3.5 text-primary" />
-                </div>
-              </div>
-              <div className="text-2xl font-semibold text-foreground mb-1">{completedNotes}</div>
-              <p className="text-sm text-muted-foreground">
-                Enhanced notes
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="border border-border bg-card shadow-sm">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Pending</CardTitle>
-                <div className="p-1.5 bg-primary/10 rounded-lg">
-                  <AlertCircle className="h-3.5 w-3.5 text-primary" />
-                </div>
-              </div>
-              <div className="text-2xl font-semibold text-foreground mb-1">{pendingNotes}</div>
-              <p className="text-sm text-muted-foreground">
-                Waiting to start
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
         {/* Usage Meter and Quick Upload - Side by Side */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
           {/* Usage Meter for Free Users, Study Analytics for Paid Users */}
@@ -242,6 +209,37 @@ export default function Dashboard() {
                   Upload Note
                 </Button>
               </Link>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Stats Cards - Compact */}
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          <Card className="border border-border bg-card shadow-sm">
+            <CardContent className="p-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-lg font-semibold text-foreground">{completedNotes}</div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Completed</p>
+                </div>
+                <div className="p-1.5 bg-primary/10 rounded-lg">
+                  <CheckCircle className="h-3.5 w-3.5 text-primary" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border border-border bg-card shadow-sm">
+            <CardContent className="p-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-lg font-semibold text-foreground">{pendingNotes}</div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Pending</p>
+                </div>
+                <div className="p-1.5 bg-primary/10 rounded-lg">
+                  <AlertCircle className="h-3.5 w-3.5 text-primary" />
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
