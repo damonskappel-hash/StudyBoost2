@@ -147,8 +147,8 @@ Return only the JSON array, no additional text.`
       }
       
       // Check for obvious answers (any word from answer in question)
-      const answerWords = answer.split(' ').filter(word => word.length > 2)
-      const questionWords = question.split(' ').filter(word => word.length > 2)
+      const answerWords = answer.split(' ').filter((word: string) => word.length > 2)
+      const questionWords = question.split(' ').filter((word: string) => word.length > 2)
       
       const hasOverlap = answerWords.some(answerWord => 
         questionWords.some(questionWord => 
@@ -206,8 +206,8 @@ Return only the JSON array, no additional text.`
       const answerLower = answer.toLowerCase()
       
       // Check if answer appears in question (more comprehensive check)
-      const answerWords = answerLower.split(' ').filter(word => word.length > 2)
-      const questionWords = questionLower.split(' ').filter(word => word.length > 2)
+      const answerWords = answerLower.split(' ').filter((word: string) => word.length > 2)
+      const questionWords = questionLower.split(' ').filter((word: string) => word.length > 2)
       
       // Skip if any significant word from the answer appears in the question
       const hasOverlap = answerWords.some(answerWord => 
