@@ -127,13 +127,13 @@ export default function Dashboard() {
         {/* Stats Cards */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
           <Card className="border border-border bg-card shadow-sm">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Completed</CardTitle>
-              <div className="p-2 bg-primary/10 rounded-lg">
-                <CheckCircle className="h-4 w-4 text-primary" />
+              <div className="p-1.5 bg-primary/10 rounded-lg">
+                <CheckCircle className="h-3.5 w-3.5 text-primary" />
               </div>
             </CardHeader>
-            <CardContent className="pt-0">
+            <CardContent className="pt-0 pb-4">
               <div className="text-2xl font-semibold text-foreground mb-1">{completedNotes}</div>
               <p className="text-sm text-muted-foreground">
                 Enhanced notes
@@ -142,13 +142,13 @@ export default function Dashboard() {
           </Card>
 
           <Card className="border border-border bg-card shadow-sm">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Pending</CardTitle>
-              <div className="p-2 bg-primary/10 rounded-lg">
-                <AlertCircle className="h-4 w-4 text-primary" />
+              <div className="p-1.5 bg-primary/10 rounded-lg">
+                <AlertCircle className="h-3.5 w-3.5 text-primary" />
               </div>
             </CardHeader>
-            <CardContent className="pt-0">
+            <CardContent className="pt-0 pb-4">
               <div className="text-2xl font-semibold text-foreground mb-1">{pendingNotes}</div>
               <p className="text-sm text-muted-foreground">
                 Waiting to start
