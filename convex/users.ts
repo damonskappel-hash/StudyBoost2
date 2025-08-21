@@ -1,4 +1,5 @@
 import { mutation, query } from "./_generated/server";
+import type { Id } from "./_generated/dataModel";
 import { v } from "convex/values";
 
 export const createUser = mutation({
@@ -192,7 +193,7 @@ export const cleanupDuplicateUsers = mutation({
   handler: async (ctx) => {
     const allUsers = await ctx.db.query("users").collect();
     const clerkUserIds = new Set<string>();
-    const usersToDelete: string[] = [];
+    const usersToDelete: Id<'users'>[] = [];
 
     // Find duplicates
     for (const user of allUsers) {
