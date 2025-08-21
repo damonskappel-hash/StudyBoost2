@@ -60,6 +60,16 @@ export function Sidebar() {
         </Link>
       </div>
 
+      {/* New Note Button */}
+      <div className="p-4 border-b border-border">
+        <Link href="/enhance" className="w-full">
+          <Button size="sm" className="w-full h-9">
+            <Plus className="mr-2 h-4 w-4" />
+            New Note
+          </Button>
+        </Link>
+      </div>
+
       {/* Navigation */}
       <nav className="flex-1 space-y-1 px-3 py-4">
         {navigation.map((item) => {
@@ -85,19 +95,8 @@ export function Sidebar() {
       </nav>
 
       {/* Bottom section */}
-      <div className="border-t border-border p-4 space-y-3">
-        {/* New Note Button */}
-        <Link href="/enhance" className="w-full">
-          <Button size="sm" className="w-full h-9">
-            <Plus className="mr-2 h-4 w-4" />
-            New Note
-          </Button>
-        </Link>
-
-        {/* Theme Toggle */}
-        <div className="flex justify-center">
-          <ThemeToggle />
-        </div>
+      <div className="border-t border-border p-4">
+        {/* Theme Toggle - Removed since it's now in header */}
       </div>
     </div>
   )

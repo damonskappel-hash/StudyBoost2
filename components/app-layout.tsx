@@ -3,7 +3,8 @@
 import { Sidebar } from "@/components/sidebar"
 import { UserButton } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
-import { Brain, Home, BookOpen, BarChart3, FileText, Settings } from "lucide-react"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { HelpCircle, MessageCircle, FileText, Settings } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
@@ -14,26 +15,26 @@ interface AppLayoutProps {
 export function AppLayout({ children }: AppLayoutProps) {
   const pathname = usePathname()
 
-  const navigation = [
+  const headerNavigation = [
     {
-      name: "Dashboard",
-      href: "/dashboard",
-      icon: Home,
+      name: "Help Center",
+      href: "/help",
+      icon: HelpCircle,
     },
     {
-      name: "Subjects",
-      href: "/subjects",
-      icon: BookOpen,
+      name: "Contact Us",
+      href: "/contact",
+      icon: MessageCircle,
     },
     {
-      name: "Analytics",
-      href: "/analytics",
-      icon: BarChart3,
-    },
-    {
-      name: "Flashcards",
-      href: "/flashcards",
+      name: "FAQ",
+      href: "/faq",
       icon: FileText,
+    },
+    {
+      name: "Settings",
+      href: "/settings",
+      icon: Settings,
     },
   ]
 
@@ -44,9 +45,9 @@ export function AppLayout({ children }: AppLayoutProps) {
         {/* Header */}
         <header className="border-b border-border bg-card px-6 py-3">
           <div className="flex items-center justify-between">
-            {/* Left side - Navigation */}
+            {/* Left side - Support Navigation */}
             <div className="flex items-center space-x-1">
-              {navigation.map((item) => {
+              {headerNavigation.map((item) => {
                 const isActive = pathname === item.href
                 return (
                   <Link key={item.name} href={item.href}>
@@ -63,8 +64,9 @@ export function AppLayout({ children }: AppLayoutProps) {
               })}
             </div>
 
-            {/* Right side - Account */}
+            {/* Right side - Theme Toggle and Account */}
             <div className="flex items-center space-x-3">
+              <ThemeToggle />
               <UserButton 
                 appearance={{
                   elements: {
