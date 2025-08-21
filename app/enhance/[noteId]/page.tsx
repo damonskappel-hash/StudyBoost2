@@ -147,7 +147,8 @@ export default function EnhancedNotePage() {
     
     setAiLoading(true)
     try {
-      const result = await generateSummary(note.originalContent, note.subject)
+      const subject = note.subject || 'General'
+      const result = await generateSummary(note.originalContent, subject)
       if (result.success && result.data) {
         setSummary(result.data.summary)
         toast.success("Summary generated successfully!")
@@ -167,7 +168,8 @@ export default function EnhancedNotePage() {
     
     setAiLoading(true)
     try {
-      const result = await generateQuiz(note.originalContent, note.subject, 5)
+      const subject = note.subject || 'General'
+      const result = await generateQuiz(note.originalContent, subject, 5)
       if (result.success && result.data) {
         setQuiz(result.data.questions)
         setQuizAnswers(new Array(result.data.questions.length).fill(-1))
@@ -190,7 +192,8 @@ export default function EnhancedNotePage() {
     
     setAiLoading(true)
     try {
-      const result = await askQuestion(note.originalContent, note.subject, userQuestion)
+      const subject = note.subject || 'General'
+      const result = await askQuestion(note.originalContent, subject, userQuestion)
       if (result.success && result.data) {
         setAnswer(result.data.answer)
         toast.success("Answer generated!")
