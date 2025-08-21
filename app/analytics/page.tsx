@@ -261,12 +261,12 @@ export default function AnalyticsPage() {
                 <div className="space-y-4">
                   <div className="flex justify-between text-sm">
                     <span>Free Tier</span>
-                    <span>{usageLimit.currentUsage || 0}/{usageLimit.limit}</span>
+                    <span>{(usageLimit.currentUsage || 0)}/{(usageLimit.limit || 0)}</span>
                   </div>
-                  <Progress value={((usageLimit.currentUsage || 0) / usageLimit.limit) * 100} />
+                  <Progress value={((usageLimit.currentUsage || 0) / (usageLimit.limit || 1)) * 100} />
                   <p className="text-xs text-muted-foreground">
                     {usageLimit.canUse ? 
-                      `${usageLimit.limit - (usageLimit.currentUsage || 0)} notes remaining` : 
+                      `${(usageLimit.limit || 0) - (usageLimit.currentUsage || 0)} notes remaining` : 
                       "You've reached your monthly limit"
                     }
                   </p>
