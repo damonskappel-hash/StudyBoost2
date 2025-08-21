@@ -45,10 +45,10 @@ export default function SubjectsPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Please sign in</h1>
-          <p className="text-gray-600">You need to be signed in to view your subjects.</p>
+          <h1 className="text-2xl font-semibold mb-4 text-foreground">Please sign in</h1>
+          <p className="text-muted-foreground">You need to be signed in to view your subjects.</p>
         </div>
       </div>
     )
@@ -56,10 +56,10 @@ export default function SubjectsPage() {
 
   if (!notes) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading your subjects...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading your subjects...</p>
         </div>
       </div>
     )
@@ -90,13 +90,13 @@ export default function SubjectsPage() {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle className="h-4 w-4 text-green-600" />
+        return <CheckCircle className="h-4 w-4 text-green-500" />
       case 'processing':
-        return <Clock className="h-4 w-4 text-blue-600" />
+        return <Clock className="h-4 w-4 text-blue-500" />
       case 'failed':
-        return <AlertCircle className="h-4 w-4 text-red-600" />
+        return <AlertCircle className="h-4 w-4 text-red-500" />
       default:
-        return <Clock className="h-4 w-4 text-orange-600" />
+        return <Clock className="h-4 w-4 text-orange-500" />
     }
   }
 
@@ -227,27 +227,27 @@ export default function SubjectsPage() {
 
   return (
     <AppLayout>
-      <div className="p-8">
+      <div className="p-6">
         <div className="max-w-4xl mx-auto">
           {/* Page Header */}
-          <div className="mb-10">
-            <h1 className="text-4xl font-bold text-gray-900 mb-3 tracking-tight">My Subjects</h1>
-            <p className="text-xl text-gray-600 font-medium">
-              Organize and study all your notes by subject. Hover over any subject to expand and interact with your notes.
+          <div className="mb-8">
+            <h1 className="text-3xl font-semibold text-foreground mb-2 tracking-tight">My Subjects</h1>
+            <p className="text-base text-muted-foreground">
+              Organize and study all your notes by subject. Click on any subject to expand and interact with your notes.
             </p>
           </div>
 
           {Object.keys(subjects).length === 0 ? (
-            <Card className="shadow-sm hover:shadow-md transition-all duration-200 border-0 bg-white">
+            <Card className="border border-border bg-card shadow-sm">
               <CardContent className="pt-6">
                 <div className="text-center py-12">
-                  <FolderOpen className="h-16 w-16 text-blue-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No subjects yet</h3>
-                  <p className="text-gray-600 mb-6">
+                  <FolderOpen className="h-16 w-16 text-muted-foreground/50 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-foreground mb-2">No subjects yet</h3>
+                  <p className="text-muted-foreground mb-6">
                     Create your first note to start organizing by subject.
                   </p>
                   <Link href="/enhance">
-                    <Button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
+                    <Button size="sm" className="h-9">
                       <Plus className="mr-2 h-4 w-4" />
                       Create First Note
                     </Button>
@@ -267,31 +267,31 @@ export default function SubjectsPage() {
                 return (
                   <Card 
                     key={subject} 
-                    className="shadow-sm hover:shadow-md transition-all duration-200 border-0 bg-white"
+                    className="border border-border bg-card shadow-sm"
                   >
                     {/* Subject Header - Click to expand */}
                     <div 
-                      className="p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+                      className="p-6 cursor-pointer hover:bg-muted/50 transition-colors"
                       onClick={() => setExpandedSubjects(prev => ({ ...prev, [subject]: !prev[subject] }))}
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-4">
-                          <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                            <BookOpen className="h-6 w-6 text-blue-600" />
+                          <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                            <BookOpen className="h-6 w-6 text-primary" />
                           </div>
                           <div>
-                            <h3 className="text-xl font-semibold text-gray-900 tracking-wide">{subject}</h3>
-                            <p className="text-sm text-gray-600 font-medium">
+                            <h3 className="text-xl font-semibold text-foreground tracking-wide">{subject}</h3>
+                            <p className="text-sm text-muted-foreground font-medium">
                               {stats.total} notes • {stats.totalWords} words • {stats.completed} enhanced
                             </p>
                           </div>
                         </div>
                         <div className="flex items-center space-x-3">
-                          <Badge className="bg-blue-100 text-blue-800 border-blue-200 px-3 py-1 rounded-full text-sm font-medium">
+                          <Badge className="bg-primary/10 text-primary px-3 py-1 rounded-md text-sm font-medium">
                             {stats.total} notes
                           </Badge>
                           <ArrowRight 
-                            className={`h-5 w-5 text-gray-400 transition-transform duration-200 ${
+                            className={`h-5 w-5 text-muted-foreground transition-transform duration-200 ${
                               isExpanded ? 'rotate-90' : ''
                             }`} 
                           />
@@ -301,15 +301,15 @@ export default function SubjectsPage() {
 
                     {/* Expanded Content */}
                     <div 
-                      className={`border-t border-gray-200 bg-gray-50 transition-all duration-300 ease-in-out ${
+                      className={`border-t border-border bg-muted/30 transition-all duration-300 ease-in-out ${
                         isExpanded ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
                       }`}
                     >
                       <div className="p-6 space-y-6">
                         {/* AI Features Section */}
                         <div className="space-y-4">
-                          <h4 className="text-lg font-semibold text-gray-800 tracking-wide flex items-center">
-                            <Sparkles className="mr-2 h-5 w-5 text-blue-600" />
+                          <h4 className="text-lg font-semibold text-foreground tracking-wide flex items-center">
+                            <Sparkles className="mr-2 h-5 w-5 text-primary" />
                             AI Features
                           </h4>
                           
@@ -319,10 +319,10 @@ export default function SubjectsPage() {
                               disabled={aiLoading === `summary-${subject}` || stats.total === 0}
                               variant="outline"
                               size="sm"
-                              className="border-blue-300 text-blue-700 hover:bg-blue-50 font-semibold"
+                              className="h-8"
                             >
                               {aiLoading === `summary-${subject}` ? (
-                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
+                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary mr-2"></div>
                               ) : (
                                 <BookOpen className="h-4 w-4 mr-2" />
                               )}
@@ -334,10 +334,10 @@ export default function SubjectsPage() {
                               disabled={aiLoading === `quiz-${subject}` || stats.total === 0}
                               variant="outline"
                               size="sm"
-                              className="border-blue-300 text-blue-700 hover:bg-blue-50 font-semibold"
+                              className="h-8"
                             >
                               {aiLoading === `quiz-${subject}` ? (
-                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
+                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary mr-2"></div>
                               ) : (
                                 <HelpCircle className="h-4 w-4 mr-2" />
                               )}
@@ -349,7 +349,7 @@ export default function SubjectsPage() {
                               disabled={stats.total === 0}
                               variant="outline"
                               size="sm"
-                              className="border-blue-300 text-blue-700 hover:bg-blue-50 font-semibold"
+                              className="h-8"
                             >
                               <HelpCircle className="h-4 w-4 mr-2" />
                               Ask Questions
@@ -358,9 +358,9 @@ export default function SubjectsPage() {
 
                           {/* Summary Display */}
                           {subjectSummary[subject] && (
-                            <div className="bg-white border border-blue-200 rounded-lg p-4 shadow-sm">
-                              <h5 className="font-semibold text-blue-900 mb-3">Subject Summary:</h5>
-                              <div className="prose prose-sm max-w-none text-blue-800">
+                            <div className="border border-border bg-card rounded-lg p-4 shadow-sm">
+                              <h5 className="font-semibold text-foreground mb-3">Subject Summary:</h5>
+                              <div className="prose prose-sm max-w-none text-muted-foreground">
                                 <div className="whitespace-pre-wrap">{subjectSummary[subject]}</div>
                               </div>
                             </div>
@@ -369,10 +369,10 @@ export default function SubjectsPage() {
                           {/* Quiz Display */}
                           {showQuiz === subject && currentQuiz.length > 0 && (
                             <div className="space-y-4 max-h-none overflow-visible">
-                              <h5 className="font-semibold text-gray-800">Subject Quiz:</h5>
+                              <h5 className="font-semibold text-foreground">Subject Quiz:</h5>
                               {currentQuiz.map((question, index) => (
-                                <div key={index} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-                                  <h6 className="font-medium mb-3">Question {index + 1}: {question.question}</h6>
+                                <div key={index} className="border border-border bg-card rounded-lg p-4 shadow-sm">
+                                  <h6 className="font-medium mb-3 text-foreground">Question {index + 1}: {question.question}</h6>
                                   <div className="space-y-2">
                                     {question.options.map((option, optionIndex) => (
                                       <label key={optionIndex} className="flex items-center space-x-3 cursor-pointer">
@@ -381,17 +381,17 @@ export default function SubjectsPage() {
                                           name={`subject-${subject}-question-${index}`}
                                           checked={currentAnswers[index] === optionIndex}
                                           onChange={() => handleQuizAnswer(subject, index, optionIndex)}
-                                          className="text-blue-600 border-gray-300 focus:ring-blue-500"
+                                          className="text-primary border-border focus:ring-primary"
                                         />
-                                        <span className="text-sm font-medium text-gray-700">{option}</span>
+                                        <span className="text-sm font-medium text-foreground">{option}</span>
                                       </label>
                                     ))}
                                   </div>
                                   {currentResults && (
                                     <div className={`mt-3 p-3 rounded-lg text-sm ${
                                       currentAnswers[index] === question.correctAnswer 
-                                        ? 'bg-green-100 text-green-800 border border-green-200' 
-                                        : 'bg-red-100 text-red-800 border border-red-200'
+                                        ? 'bg-green-500/10 text-green-500 border border-green-500/20' 
+                                        : 'bg-red-500/10 text-red-500 border border-red-500/20'
                                     }`}>
                                       <strong>Explanation:</strong> {question.explanation}
                                     </div>
@@ -401,25 +401,26 @@ export default function SubjectsPage() {
                               {!currentResults && (
                                 <Button 
                                   onClick={() => handleSubmitQuiz(subject)} 
-                                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg"
+                                  size="sm"
+                                  className="w-full h-8"
                                 >
                                   Submit Quiz
                                 </Button>
                               )}
                               {currentResults && (
-                                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-                                  <h5 className="font-semibold text-blue-900 mb-2">Quiz Results</h5>
-                                  <p className="text-blue-800 font-medium">
+                                <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 text-center">
+                                  <h5 className="font-semibold text-foreground mb-2">Quiz Results</h5>
+                                  <p className="text-foreground font-medium">
                                     You got {currentResults.correct} out of {currentResults.total} questions correct!
                                   </p>
-                                  <p className="text-sm text-blue-600 mt-1 font-medium">
+                                  <p className="text-sm text-muted-foreground mt-1 font-medium">
                                     Score: {Math.round((currentResults.correct / currentResults.total) * 100)}%
                                   </p>
                                   <Button 
                                     onClick={() => setShowQuiz(null)}
                                     variant="outline"
                                     size="sm"
-                                    className="mt-3 border-blue-300 text-blue-700 hover:bg-blue-50 font-semibold"
+                                    className="mt-3 h-8"
                                   >
                                     Collapse Quiz
                                   </Button>
@@ -431,8 +432,8 @@ export default function SubjectsPage() {
                           {/* Q&A Section */}
                           {showQuiz === subject && (
                             <div className="space-y-4">
-                              <h5 className="font-semibold text-gray-800 flex items-center">
-                                <HelpCircle className="mr-2 h-4 w-4 text-blue-600" />
+                              <h5 className="font-semibold text-foreground flex items-center">
+                                <HelpCircle className="mr-2 h-4 w-4 text-primary" />
                                 Ask Questions About This Subject
                               </h5>
                               <div className="flex space-x-3">
@@ -441,14 +442,14 @@ export default function SubjectsPage() {
                                   value={userQuestion[subject] || ''}
                                   onChange={(e) => setUserQuestion(prev => ({ ...prev, [subject]: e.target.value }))}
                                   placeholder="Ask a question about this subject..."
-                                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                  className="flex-1 px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
                                   onKeyPress={(e) => e.key === 'Enter' && handleAskQuestion(subject)}
                                 />
                                 <Button
                                   onClick={() => handleAskQuestion(subject)}
                                   disabled={aiLoading === `qa-${subject}` || !userQuestion[subject]?.trim()}
                                   size="sm"
-                                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg"
+                                  className="h-8"
                                 >
                                   {aiLoading === `qa-${subject}` ? (
                                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
@@ -458,9 +459,9 @@ export default function SubjectsPage() {
                                 </Button>
                               </div>
                               {answer[subject] && (
-                                <div className="bg-white border border-green-200 rounded-lg p-4 shadow-sm">
-                                  <h5 className="font-semibold text-green-900 mb-3">Answer:</h5>
-                                  <div className="prose prose-sm max-w-none text-green-800">
+                                <div className="border border-border bg-card rounded-lg p-4 shadow-sm">
+                                  <h5 className="font-semibold text-foreground mb-3">Answer:</h5>
+                                  <div className="prose prose-sm max-w-none text-muted-foreground">
                                     <div className="whitespace-pre-wrap">{answer[subject]}</div>
                                   </div>
                                 </div>
@@ -472,12 +473,12 @@ export default function SubjectsPage() {
                         {/* Notes Section */}
                         <div className="space-y-4">
                           <div className="flex items-center justify-between">
-                            <h4 className="text-lg font-semibold text-gray-800 tracking-wide flex items-center">
-                              <FileText className="mr-2 h-5 w-5 text-blue-600" />
+                            <h4 className="text-lg font-semibold text-foreground tracking-wide flex items-center">
+                              <FileText className="mr-2 h-5 w-5 text-primary" />
                               Notes ({subjectNotes.length})
                             </h4>
                             <Link href={`/subjects/${encodeURIComponent(subject)}`}>
-                              <Button variant="outline" size="sm" className="border-blue-300 text-blue-700 hover:bg-blue-50 font-semibold">
+                              <Button variant="outline" size="sm" className="h-8">
                                 View All Notes
                                 <ArrowRight className="ml-2 h-4 w-4" />
                               </Button>
@@ -489,28 +490,28 @@ export default function SubjectsPage() {
                               <Link 
                                 key={note._id} 
                                 href={`/enhance/${note._id}`}
-                                className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors shadow-sm"
+                                className="flex items-center justify-between p-4 border border-border bg-card rounded-lg hover:bg-muted/50 transition-colors shadow-sm"
                               >
                                 <div className="flex items-center space-x-4">
-                                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                                    <FileText className="h-5 w-5 text-blue-600" />
+                                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                                    <FileText className="h-5 w-5 text-primary" />
                                   </div>
                                   <div>
-                                    <div className="font-semibold text-gray-900">{note.title}</div>
-                                    <div className="text-sm text-gray-500 font-medium">
+                                    <div className="font-semibold text-foreground">{note.title}</div>
+                                    <div className="text-sm text-muted-foreground font-medium">
                                       {new Date(note.createdAt).toLocaleDateString()} • {note.wordCount || 0} words
                                     </div>
                                   </div>
                                 </div>
                                 <div className="flex items-center space-x-3">
                                   {getStatusIcon(note.enhancementStatus)}
-                                  <ArrowRight className="h-4 w-4 text-gray-400" />
+                                  <ArrowRight className="h-4 w-4 text-muted-foreground" />
                                 </div>
                               </Link>
                             ))}
                             {subjectNotes.length > 5 && (
                               <Link href={`/subjects/${encodeURIComponent(subject)}`}>
-                                <Button variant="ghost" size="sm" className="w-full text-blue-600 hover:text-blue-700 hover:bg-blue-50 font-semibold">
+                                <Button variant="ghost" size="sm" className="w-full h-8 text-primary hover:text-primary hover:bg-primary/10">
                                   View all {subjectNotes.length} notes
                                 </Button>
                               </Link>
