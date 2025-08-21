@@ -150,8 +150,8 @@ Return only the JSON array, no additional text.`
       const answerWords = answer.split(' ').filter((word: string) => word.length > 2)
       const questionWords = question.split(' ').filter((word: string) => word.length > 2)
       
-      const hasOverlap = answerWords.some(answerWord => 
-        questionWords.some(questionWord => 
+      const hasOverlap = answerWords.some((answerWord: string) => 
+        questionWords.some((questionWord: string) => 
           questionWord.includes(answerWord) || answerWord.includes(questionWord)
         )
       )
@@ -210,8 +210,8 @@ Return only the JSON array, no additional text.`
       const questionWords = questionLower.split(' ').filter((word: string) => word.length > 2)
       
       // Skip if any significant word from the answer appears in the question
-      const hasOverlap = answerWords.some(answerWord => 
-        questionWords.some(questionWord => 
+      const hasOverlap = answerWords.some((answerWord: string) => 
+        questionWords.some((questionWord: string) => 
           questionWord.includes(answerWord) || answerWord.includes(questionWord)
         )
       )
