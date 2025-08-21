@@ -107,7 +107,7 @@ export const getDueFlashcards = query({
         q.eq("userId", user._id).lte("nextReview", now)
       );
 
-    if (args.subject) {
+    if (typeof args.subject === 'string') {
       query = ctx.db
         .query("flashcards")
         .withIndex("by_subject", (q) => 
@@ -147,7 +147,7 @@ export const getAllFlashcards = query({
       throw new Error("User not found");
     }
 
-    if (args.subject) {
+    if (typeof args.subject === 'string') {
       return await ctx.db
         .query("flashcards")
         .withIndex("by_subject", (q) => 
