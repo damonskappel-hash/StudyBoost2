@@ -204,11 +204,11 @@ Return only the JSON array, no additional text.`;
         }
         
         // Check for obvious answers (any word from answer in question)
-        const answerWords = answer.split(' ').filter(word => word.length > 2);
-        const questionWords = question.split(' ').filter(word => word.length > 2);
+        const answerWords = answer.split(' ').filter((word: string) => word.length > 2);
+        const questionWords = question.split(' ').filter((word: string) => word.length > 2);
         
-        const hasOverlap = answerWords.some(answerWord => 
-          questionWords.some(questionWord => 
+        const hasOverlap = answerWords.some((answerWord: string) => 
+          questionWords.some((questionWord: string) => 
             questionWord.includes(answerWord) || answerWord.includes(questionWord)
           )
         );
