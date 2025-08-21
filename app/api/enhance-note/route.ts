@@ -7,7 +7,10 @@ const openai = new OpenAI({
 
 export async function POST(request: NextRequest) {
   try {
-    const { content, subject, enhancementSettings } = await request.json()
+    const body = await request.json()
+    const content: string | undefined = body.content || body.originalContent
+    const subject: string | undefined = body.subject
+    const enhancementSettings = body.enhancementSettings
 
     if (!content || !subject) {
       return NextResponse.json(
