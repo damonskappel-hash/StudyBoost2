@@ -67,10 +67,11 @@ export default function SubjectsPage() {
 
   // Group notes by subject
   const subjects = notes.reduce((acc, note) => {
-    if (!acc[note.subject]) {
-      acc[note.subject] = []
+    const subject = note.subject || 'Uncategorized'
+    if (!acc[subject]) {
+      acc[subject] = []
     }
-    acc[note.subject].push(note)
+    acc[subject].push(note)
     return acc
   }, {} as { [key: string]: typeof notes })
 
