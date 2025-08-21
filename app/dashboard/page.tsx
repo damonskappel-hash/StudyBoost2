@@ -98,10 +98,10 @@ export default function Dashboard() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Please sign in</h1>
-          <p className="text-gray-600">You need to be signed in to access the dashboard.</p>
+          <h1 className="text-2xl font-semibold mb-4 text-foreground">Please sign in</h1>
+          <p className="text-muted-foreground">You need to be signed in to access the dashboard.</p>
         </div>
       </div>
     )
@@ -113,87 +113,81 @@ export default function Dashboard() {
 
   return (
     <AppLayout>
-      <div className="p-8">
+      <div className="p-6">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-3 tracking-tight">
+          <h1 className="text-3xl font-semibold text-foreground mb-2 tracking-tight">
             Welcome back, {user.firstName || user.username || "Student"}!
           </h1>
-          <p className="text-gray-600 text-lg font-medium">
+          <p className="text-muted-foreground text-base">
             Ready to enhance your notes and study smarter?
           </p>
         </div>
 
-
-
-
-
         {/* Stats Cards */}
-        <div className="grid md:grid-cols-2 gap-8 mb-10">
-          <Card className="shadow-sm hover:shadow-md transition-all duration-200 border-0 bg-white">
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          <Card className="border border-border bg-card shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-              <CardTitle className="text-sm font-semibold text-gray-700 tracking-wide uppercase">Completed</CardTitle>
-              <div className="p-2 bg-blue-50 rounded-lg">
-                <CheckCircle className="h-4 w-4 text-blue-600" />
+              <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Completed</CardTitle>
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <CheckCircle className="h-4 w-4 text-primary" />
               </div>
             </CardHeader>
             <CardContent className="pt-0">
-              <div className="text-3xl font-bold text-blue-600 mb-1">{completedNotes}</div>
-              <p className="text-sm text-gray-500 font-medium">
+              <div className="text-2xl font-semibold text-foreground mb-1">{completedNotes}</div>
+              <p className="text-sm text-muted-foreground">
                 Enhanced notes
               </p>
             </CardContent>
           </Card>
 
-          <Card className="shadow-sm hover:shadow-md transition-all duration-200 border-0 bg-white">
+          <Card className="border border-border bg-card shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-              <CardTitle className="text-sm font-semibold text-gray-700 tracking-wide uppercase">Pending</CardTitle>
-              <div className="p-2 bg-blue-50 rounded-lg">
-                <AlertCircle className="h-4 w-4 text-blue-500" />
+              <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Pending</CardTitle>
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <AlertCircle className="h-4 w-4 text-primary" />
               </div>
             </CardHeader>
             <CardContent className="pt-0">
-              <div className="text-3xl font-bold text-blue-500 mb-1">{pendingNotes}</div>
-              <p className="text-sm text-gray-500 font-medium">
+              <div className="text-2xl font-semibold text-foreground mb-1">{pendingNotes}</div>
+              <p className="text-sm text-muted-foreground">
                 Waiting to start
               </p>
             </CardContent>
           </Card>
         </div>
 
-
-
         {/* Usage Meter and Quick Upload - Side by Side */}
-        <div className="grid md:grid-cols-2 gap-8 mb-10">
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
           {/* Usage Meter for Free Users, Study Analytics for Paid Users */}
           {(subscriptionStatus === 'free') && usageLimit ? (
-            <Card className="shadow-sm hover:shadow-md transition-all duration-200 border-0 bg-white overflow-hidden">
-              <div className="h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500" />
+            <Card className="border border-border bg-card shadow-sm overflow-hidden">
+              <div className="h-1 bg-gradient-to-r from-primary via-primary/80 to-primary/60" />
               <CardHeader className="pb-4">
-                <CardTitle className="flex items-center justify-between text-lg font-semibold text-gray-800 tracking-wide">
+                <CardTitle className="flex items-center justify-between text-base font-medium text-foreground">
                   <span>Monthly Usage</span>
-                  <span className="text-sm font-medium text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                  <span className="text-sm font-medium text-primary bg-primary/10 px-2 py-1 rounded-md">
                     {usageLimit?.currentUsage || 0}/{usageLimit?.limit || 0}
                   </span>
                 </CardTitle>
-                <CardDescription className="text-gray-600">
+                <CardDescription className="text-muted-foreground">
                   You've used {usageLimit?.currentUsage || 0} of {usageLimit?.limit || 0} notes this month
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="space-y-4">
                   {/* Enhanced progress bar */}
-                  <div className="w-full h-4 rounded-full bg-gray-100 overflow-hidden">
+                  <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
                     <div
-                      className="h-4 rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 transition-all duration-500 ease-out"
+                      className="h-2 rounded-full bg-gradient-to-r from-primary via-primary/80 to-primary/60 transition-all duration-500 ease-out"
                       style={{ width: `${((usageLimit?.currentUsage || 0) / (usageLimit?.limit || 1)) * 100}%` }}
                     />
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-700">
+                    <span className="text-sm font-medium text-muted-foreground">
                       {usageLimit?.canUse ? `${(usageLimit?.limit || 0) - (usageLimit?.currentUsage || 0)} notes remaining` : "Limit reached"}
                     </span>
-                    <span className="text-sm font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded-md">
+                    <span className="text-sm font-semibold text-primary bg-primary/10 px-2 py-1 rounded-md">
                       {Math.round(((usageLimit?.currentUsage || 0) / (usageLimit?.limit || 1)) * 100)}%
                     </span>
                   </div>
@@ -201,70 +195,29 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           ) : (
-            /* Study Analytics for Paid Users */
-            <Card className="shadow-sm hover:shadow-md transition-all duration-200 border-0 bg-white overflow-hidden">
-              <div className="h-1 bg-gradient-to-r from-emerald-400 via-teal-500 to-blue-500" />
+            <Card className="border border-border bg-card shadow-sm">
               <CardHeader className="pb-4">
-                <CardTitle className="flex items-center justify-between text-lg font-semibold text-gray-800 tracking-wide">
-                  <span>Study Progress</span>
-                  <span className="text-sm font-medium text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">
-                    {subscriptionStatus === 'student' ? 'Student' : 
-                     subscriptionStatus === 'pro' ? 'Pro' : 'Student'}
-                  </span>
+                <CardTitle className="flex items-center text-base font-medium text-foreground">
+                  <TrendingUp className="mr-2 h-4 w-4 text-primary" />
+                  Study Progress
                 </CardTitle>
-                <CardDescription className="text-gray-600">
-                  Track your learning progress and study habits
+                <CardDescription className="text-muted-foreground">
+                  Track your learning journey
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0">
-                <div className="grid grid-cols-2 gap-4">
-                  {/* Study Streak */}
-                  <div className="text-center p-3 bg-emerald-50 rounded-lg">
-                    <div className="flex items-center justify-center mb-2">
-                      <TrendingUp className="h-5 w-5 text-emerald-600" />
-                    </div>
-                    <div className="text-2xl font-bold text-emerald-600 mb-1">
-                      {activityStats?.streak ?? 0}
-                    </div>
-                    <div className="text-xs text-emerald-700 font-medium">Day Streak</div>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Goals Met</span>
+                    <span className="text-sm font-semibold text-foreground">
+                      {activityStats?.goalsMet || 0}/5
+                    </span>
                   </div>
-
-                  {/* Notes This Week */}
-                  <div className="text-center p-3 bg-blue-50 rounded-lg">
-                    <div className="flex items-center justify-center mb-2">
-                      <Calendar className="h-5 w-5 text-blue-600" />
-                    </div>
-                    <div className="text-2xl font-bold text-blue-600 mb-1">
-                      {notes?.filter(note => {
-                        const noteDate = new Date(note.createdAt)
-                        const weekAgo = new Date()
-                        weekAgo.setDate(weekAgo.getDate() - 7)
-                        return noteDate > weekAgo
-                      }).length || 0}
-                    </div>
-                    <div className="text-xs text-blue-700 font-medium">Notes This Week</div>
-                  </div>
-
-                  {/* Subjects Covered */}
-                  <div className="text-center p-3 bg-purple-50 rounded-lg">
-                    <div className="flex items-center justify-center mb-2">
-                      <BookOpen className="h-5 w-5 text-purple-600" />
-                    </div>
-                    <div className="text-2xl font-bold text-purple-600 mb-1">
-                      {notes ? new Set(notes.map(note => note.subject)).size : 0}
-                    </div>
-                    <div className="text-xs text-purple-700 font-medium">Subjects</div>
-                  </div>
-
-                  {/* Study Goals */}
-                  <div className="text-center p-3 bg-orange-50 rounded-lg">
-                    <div className="flex items-center justify-center mb-2">
-                      <Target className="h-5 w-5 text-orange-600" />
-                    </div>
-                    <div className="text-2xl font-bold text-orange-600 mb-1">
-                      {activityStats ? `${activityStats.goalsMet}/${activityStats.goalsTotal}` : '0/0'}
-                    </div>
-                    <div className="text-xs text-orange-700 font-medium">Goals Met</div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Day Streak</span>
+                    <span className="text-sm font-semibold text-foreground">
+                      {activityStats?.streak || 0} days
+                    </span>
                   </div>
                 </div>
               </CardContent>
@@ -272,23 +225,21 @@ export default function Dashboard() {
           )}
 
           {/* Quick Upload */}
-          <Card className="shadow-sm hover:shadow-md transition-all duration-200 border-0 bg-white overflow-hidden">
-            <div className="h-1 bg-gradient-to-r from-emerald-400 via-teal-500 to-blue-500" />
+          <Card className="border border-border bg-card shadow-sm">
             <CardHeader className="pb-4">
-              <CardTitle className="text-lg font-semibold text-gray-800 tracking-wide">Quick Upload</CardTitle>
-              <CardDescription className="text-gray-600">
-                Upload a new note to get started with AI enhancement
+              <CardTitle className="flex items-center text-base font-medium text-foreground">
+                <Upload className="mr-2 h-4 w-4 text-primary" />
+                Quick Upload
+              </CardTitle>
+              <CardDescription className="text-muted-foreground">
+                Enhance a new note in seconds
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-0">
               <Link href="/enhance">
-                <Button
-                  className="w-full bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 hover:from-blue-700 hover:via-blue-800 hover:to-indigo-800 text-white shadow-lg hover:shadow-xl transition-all duration-200 h-12 text-base font-semibold rounded-lg"
-                  size="lg"
-                >
-                  <Upload className="mr-3 h-5 w-5" />
+                <Button size="sm" className="w-full h-9">
+                  <Plus className="mr-2 h-4 w-4" />
                   Upload Note
-                  <ArrowRight className="ml-3 h-4 w-4" />
                 </Button>
               </Link>
             </CardContent>
@@ -296,62 +247,56 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Notes */}
-        <Card className="shadow-sm hover:shadow-md transition-all duration-200 border-0 bg-white">
+        <Card className="border border-border bg-card shadow-sm">
           <CardHeader className="pb-4">
-            <CardTitle className="text-lg font-semibold text-gray-800 tracking-wide">Recent Notes</CardTitle>
-            <CardDescription className="text-gray-600">
-              Your recently uploaded and enhanced notes
-            </CardDescription>
+            <CardTitle className="flex items-center justify-between text-base font-medium text-foreground">
+              <span>Recent Notes</span>
+              <Link href="/subjects">
+                <Button variant="ghost" size="sm" className="h-8 text-sm">
+                  View All
+                  <ArrowRight className="ml-2 h-3 w-3" />
+                </Button>
+              </Link>
+            </CardTitle>
           </CardHeader>
-          <CardContent>
-            {recentNotes.length === 0 ? (
-              <div className="text-center py-8">
-                <FileText className="h-12 w-12 text-blue-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No notes yet</h3>
-                <p className="text-gray-600 mb-4">
-                  Upload your first note to see it here
-                </p>
-                <Link href="/enhance">
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Upload First Note
-                  </Button>
-                </Link>
-              </div>
-            ) : (
-              <div className="space-y-4">
+          <CardContent className="pt-0">
+            {recentNotes.length > 0 ? (
+              <div className="space-y-3">
                 {recentNotes.map((note) => (
-                  <div key={note._id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <FileText className="h-5 w-5 text-blue-600" />
+                  <div key={note._id} className="flex items-center justify-between p-3 rounded-lg border border-border bg-muted/30">
+                    <div className="flex items-center space-x-3">
+                      <div className="p-2 bg-primary/10 rounded-lg">
+                        <FileText className="h-4 w-4 text-primary" />
                       </div>
                       <div>
-                        <h4 className="font-medium text-gray-900">{note.title}</h4>
-                        <p className="text-sm text-gray-500">
-                          {new Date(note.createdAt).toLocaleDateString()}
+                        <p className="text-sm font-medium text-foreground">{note.title}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {note.subject || 'No subject'} • {new Date(note.createdAt).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Badge 
-                        className={
-                          note.enhancementStatus === "completed" ? "bg-blue-100 text-blue-800 border-blue-200" :
-                          note.enhancementStatus === "processing" ? "bg-blue-50 text-blue-700 border-blue-200" :
-                          note.enhancementStatus === "failed" ? "bg-red-100 text-red-800 border-red-200" : 
-                          "bg-gray-100 text-gray-700 border-gray-200"
-                        }
-                      >
-                        {note.enhancementStatus}
-                      </Badge>
-                      <Link href={`/enhance/${note._id}`}>
-                        <Button variant="ghost" size="sm" className="text-blue-600 hover:text-blue-700 hover:bg-blue-50">
-                          <ArrowRight className="h-4 w-4" />
-                        </Button>
-                      </Link>
-                    </div>
+                    <Badge 
+                      variant={note.enhancementStatus === 'completed' ? 'default' : 'secondary'}
+                      className="text-xs"
+                    >
+                      {note.enhancementStatus}
+                    </Badge>
                   </div>
                 ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <FileText className="mx-auto h-12 w-12 text-muted-foreground/50" />
+                <h3 className="mt-4 text-sm font-medium text-foreground">No notes yet</h3>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Get started by uploading your first note.
+                </p>
+                <Link href="/enhance">
+                  <Button size="sm" className="mt-4 h-8">
+                    <Plus className="mr-2 h-3 w-3" />
+                    Upload Note
+                  </Button>
+                </Link>
               </div>
             )}
           </CardContent>

@@ -16,7 +16,14 @@ export default function PricingPage() {
 
           {/* Clerk Pricing Table */}
           <div className="flex justify-center">
-            <PricingTable />
+            <PricingTable 
+              // Add your production plan IDs here
+              // Replace these with your actual plan IDs from Clerk dashboard
+              // planIds={[
+              //   "price_1ABC123...", // Student plan
+              //   "price_1DEF456..."  // Pro plan
+              // ]}
+            />
           </div>
         </div>
       </div>

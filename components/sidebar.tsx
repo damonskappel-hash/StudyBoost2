@@ -50,12 +50,14 @@ export function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <div className="flex h-full w-64 flex-col bg-card border-r">
+    <div className="flex h-full w-64 flex-col bg-card border-r border-border">
       {/* Logo */}
-      <div className="flex h-16 items-center border-b px-6">
-        <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-          <Brain className="h-8 w-8 text-blue-600" />
-          <span className="text-xl font-bold text-foreground">StudyBoost</span>
+      <div className="flex h-16 items-center border-b border-border px-6">
+        <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
+            <Brain className="h-5 w-5 text-primary" />
+          </div>
+          <span className="text-lg font-semibold text-foreground">StudyBoost</span>
         </Link>
       </div>
 
@@ -67,9 +69,12 @@ export function Sidebar() {
             <Link key={item.name} href={item.href}>
               <Button
                 variant={isActive ? "secondary" : "ghost"}
+                size="sm"
                 className={cn(
-                  "w-full justify-start",
-                  isActive && "bg-secondary text-secondary-foreground"
+                  "w-full justify-start h-9 px-3 text-sm font-medium",
+                  isActive 
+                    ? "bg-secondary text-secondary-foreground shadow-sm" 
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
                 )}
               >
                 <item.icon className="mr-3 h-4 w-4" />
@@ -81,10 +86,10 @@ export function Sidebar() {
       </nav>
 
       {/* Bottom section */}
-      <div className="border-t p-4 space-y-3">
+      <div className="border-t border-border p-4 space-y-3">
         {/* New Note Button */}
         <Link href="/enhance" className="w-full">
-          <Button className="w-full">
+          <Button size="sm" className="w-full h-9">
             <Plus className="mr-2 h-4 w-4" />
             New Note
           </Button>
@@ -97,7 +102,14 @@ export function Sidebar() {
 
         {/* User Button */}
         <div className="flex justify-center">
-          <UserButton />
+          <UserButton 
+            appearance={{
+              elements: {
+                userButtonBox: "h-8 w-8",
+                userButtonTrigger: "h-8 w-8 rounded-lg"
+              }
+            }}
+          />
         </div>
       </div>
     </div>
