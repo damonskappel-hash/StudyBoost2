@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { useToast } from "./use-toast";
+import type { Id } from "../convex/_generated/dataModel";
 import { EnhancementSettings } from "../lib/types";
 
 export function useNotes() {
@@ -16,7 +17,7 @@ export function useNotes() {
     originalContent: string,
     subject: string,
     settings: EnhancementSettings,
-    fileId?: string,
+    fileId?: Id<'_storage'>,
     fileName?: string,
     fileType?: string
   ) => {
