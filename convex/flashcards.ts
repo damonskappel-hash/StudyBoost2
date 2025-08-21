@@ -108,10 +108,11 @@ export const getDueFlashcards = query({
       );
 
     if (typeof args.subject === 'string') {
+      const subject: string = args.subject as string;
       query = ctx.db
         .query("flashcards")
         .withIndex("by_subject", (q) => 
-          q.eq("userId", user._id).eq("subject", args.subject)
+          q.eq("userId", user._id).eq("subject", subject)
         );
     }
 
@@ -148,10 +149,11 @@ export const getAllFlashcards = query({
     }
 
     if (typeof args.subject === 'string') {
+      const subject: string = args.subject as string;
       return await ctx.db
         .query("flashcards")
         .withIndex("by_subject", (q) => 
-          q.eq("userId", user._id).eq("subject", args.subject)
+          q.eq("userId", user._id).eq("subject", subject)
         )
         .collect();
     }
