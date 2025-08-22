@@ -29,7 +29,7 @@ export function useSubscription() {
 
   const upgradeSubscription = async (
     clerkUserId: string,
-    tier: "free" | "student" | "premium",
+    tier: "free" | "student" | "pro",
     status: string,
     stripeCustomerId?: string,
     stripeSubscriptionId?: string

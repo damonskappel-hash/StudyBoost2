@@ -61,7 +61,7 @@ export const updateSubscription = mutation({
     tier: v.union(
       v.literal("free"),
       v.literal("student"),
-      v.literal("premium")
+      v.literal("pro")
     ),
     status: v.string(),
     stripeCustomerId: v.optional(v.string()),
@@ -147,7 +147,7 @@ export const checkUsageLimit = query({
     const limits = {
       free: 5,
       student: 1000,
-      premium: 10000,
+      pro: 10000,
     };
 
     const limit = limits[user.subscriptionTier];

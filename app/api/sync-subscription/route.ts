@@ -35,14 +35,12 @@ export async function POST(req: Request) {
       'free'
 
     // Map Clerk subscription to Convex tier
-    let convexTier: 'free' | 'student' | 'premium' = 'free'
+    let convexTier: 'free' | 'student' | 'pro' = 'free'
     
     if (subscriptionTier === 'pro' || subscriptionTier === 'premium') {
-      convexTier = 'premium'
+      convexTier = 'pro'
     } else if (subscriptionTier === 'student') {
       convexTier = 'student'
-    } else {
-      convexTier = 'free'
     }
 
     // Update Convex user subscription

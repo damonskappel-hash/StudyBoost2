@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     }
 
     const isStudent = has?.({ plan: 'student' }) ?? false
-    const isPro = (has?.({ plan: 'pro' }) ?? false) || (has?.({ plan: 'premium' }) ?? false)
+    const isPro = has?.({ plan: 'pro' }) ?? false
     const isPaid = isStudent || isPro
 
     if (!isPaid) {

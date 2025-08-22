@@ -1,3 +1,5 @@
+import type { Id } from "../convex/_generated/dataModel";
+
 export interface EnhancementSettings {
   includeDefinitions: boolean;
   generateQuestions: boolean;
@@ -8,13 +10,13 @@ export interface EnhancementSettings {
 }
 
 export interface Note {
-  _id: string;
-  userId: string;
+  _id: Id<"notes">;
+  userId: Id<"users">;
   title: string;
   originalContent: string;
   enhancedContent?: string;
   subject?: string;
-  fileId?: string;
+  fileId?: Id<"_storage">;
   fileName?: string;
   fileType?: string;
   enhancementStatus: "pending" | "processing" | "completed" | "failed";
@@ -26,11 +28,11 @@ export interface Note {
 }
 
 export interface User {
-  _id: string;
+  _id: Id<"users">;
   clerkUserId: string;
   email: string;
   name?: string;
-  subscriptionTier: "free" | "student" | "premium";
+  subscriptionTier: "free" | "student" | "pro";
   subscriptionStatus: "active" | "cancelled" | "expired";
   monthlyNotesUsed: number;
   resetDate: number;
@@ -39,11 +41,11 @@ export interface User {
 }
 
 export interface Subscription {
-  _id: string;
-  userId: string;
+  _id: Id<"subscriptions">;
+  userId: Id<"users">;
   stripeCustomerId?: string;
   stripeSubscriptionId?: string;
-  tier: "free" | "student" | "premium";
+  tier: "free" | "student" | "pro";
   status: string;
   currentPeriodStart?: number;
   currentPeriodEnd?: number;
@@ -55,7 +57,7 @@ export interface UsageLimit {
   canUse: boolean;
   currentUsage: number;
   limit: number;
-  tier: "free" | "student" | "premium";
+  tier: "free" | "student" | "pro";
   reason?: string;
 }
 
@@ -112,8 +114,8 @@ export const PRICING_TIERS = {
       "Export to Word & Markdown",
     ],
   },
-  premium: {
-    name: "Premium",
+  pro: {
+    name: "Pro",
     price: 9.99,
     notesPerMonth: "Unlimited",
     fileSizeLimit: "100MB",
