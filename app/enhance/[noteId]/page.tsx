@@ -57,10 +57,10 @@ export default function EnhancedNotePage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Please sign in</h1>
-          <p className="text-gray-600">You need to be signed in to view notes.</p>
+          <h1 className="text-2xl font-semibold mb-4 text-foreground">Please sign in</h1>
+          <p className="text-muted-foreground">You need to be signed in to view notes.</p>
         </div>
       </div>
     )
@@ -68,10 +68,10 @@ export default function EnhancedNotePage() {
 
   if (!note) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Note not found</h1>
-          <p className="text-gray-600">The note you're looking for doesn't exist or you don't have access to it.</p>
+          <h1 className="text-2xl font-semibold mb-4 text-foreground">Note not found</h1>
+          <p className="text-muted-foreground">The note you're looking for doesn't exist or you don't have access to it.</p>
           <Link href="/dashboard">
             <Button className="mt-4">
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -86,26 +86,26 @@ export default function EnhancedNotePage() {
   const getStatusIcon = () => {
     switch (note.enhancementStatus) {
       case 'completed':
-        return <CheckCircle className="h-4 w-4 text-green-600" />
+        return <CheckCircle className="h-4 w-4 text-green-500" />
       case 'processing':
-        return <Clock className="h-4 w-4 text-blue-600" />
+        return <Clock className="h-4 w-4 text-blue-500" />
       case 'failed':
-        return <AlertCircle className="h-4 w-4 text-red-600" />
+        return <AlertCircle className="h-4 w-4 text-red-500" />
       default:
-        return <Clock className="h-4 w-4 text-orange-600" />
+        return <Clock className="h-4 w-4 text-orange-500" />
     }
   }
 
   const getStatusColor = () => {
     switch (note.enhancementStatus) {
       case 'completed':
-        return 'bg-green-100 text-green-800'
+        return 'bg-green-500/10 text-green-500 border-green-500/20'
       case 'processing':
-        return 'bg-blue-100 text-blue-800'
+        return 'bg-blue-500/10 text-blue-500 border-blue-500/20'
       case 'failed':
-        return 'bg-red-100 text-red-800'
+        return 'bg-red-500/10 text-red-500 border-red-500/20'
       default:
-        return 'bg-orange-100 text-orange-800'
+        return 'bg-orange-500/10 text-orange-500 border-orange-500/20'
     }
   }
 
@@ -254,13 +254,13 @@ export default function EnhancedNotePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-white border-b">
+      <header className="bg-card border-b border-border">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-            <Brain className="h-8 w-8 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-900">StudyBoost</span>
+            <Brain className="h-8 w-8 text-primary" />
+            <span className="text-2xl font-bold text-foreground">NoteBoost</span>
           </Link>
           <div className="flex items-center space-x-4">
             <Link href="/dashboard">
@@ -280,15 +280,15 @@ export default function EnhancedNotePage() {
           <div className="mb-8">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">{note.title}</h1>
-                <div className="flex items-center space-x-4 text-sm text-gray-600">
+                <h1 className="text-3xl font-bold text-foreground mb-2">{note.title}</h1>
+                <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                   <span>Subject: {note.subject}</span>
                   <span>Created: {new Date(note.createdAt).toLocaleDateString()}</span>
                   {note.wordCount && <span>Words: {note.wordCount}</span>}
                 </div>
               </div>
               <div className="flex items-center space-x-2">
-                <Badge className={getStatusColor()}>
+                <Badge className={`${getStatusColor()} border`}>
                   {getStatusIcon()}
                   <span className="ml-1 capitalize">{note.enhancementStatus}</span>
                 </Badge>
@@ -334,12 +334,12 @@ export default function EnhancedNotePage() {
 
           {/* Content */}
           {note.enhancementStatus === 'processing' && (
-            <Card className="mb-8">
+            <Card className="mb-8 border border-border bg-card">
               <CardContent className="pt-6">
                 <div className="text-center py-8">
-                  <Brain className="h-12 w-12 text-blue-600 mx-auto mb-4 animate-spin" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">Processing Your Note</h3>
-                  <p className="text-gray-600">
+                  <Brain className="h-12 w-12 text-primary mx-auto mb-4 animate-spin" />
+                  <h3 className="text-lg font-medium text-foreground mb-2">Processing Your Note</h3>
+                  <p className="text-muted-foreground">
                     Our AI is enhancing your content. This may take a few minutes...
                   </p>
                 </div>
@@ -348,12 +348,12 @@ export default function EnhancedNotePage() {
           )}
 
           {note.enhancementStatus === 'failed' && (
-            <Card className="mb-8">
+            <Card className="mb-8 border border-border bg-card">
               <CardContent className="pt-6">
                 <div className="text-center py-8">
-                  <AlertCircle className="h-12 w-12 text-red-600 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">Enhancement Failed</h3>
-                  <p className="text-gray-600 mb-4">
+                  <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-foreground mb-2">Enhancement Failed</h3>
+                  <p className="text-muted-foreground mb-4">
                     We encountered an error while processing your note. Please try again.
                   </p>
                   <Link href="/enhance">
@@ -370,9 +370,9 @@ export default function EnhancedNotePage() {
               {activeTab === 'split' && (
                 <div className="grid lg:grid-cols-2 gap-8">
                   {/* Original Content */}
-                  <Card>
+                  <Card className="border border-border bg-card">
                     <CardHeader>
-                      <CardTitle className="flex items-center justify-between">
+                      <CardTitle className="flex items-center justify-between text-foreground">
                         <span>Original Content</span>
                         <div className="flex items-center space-x-2">
                           <Button
@@ -395,7 +395,7 @@ export default function EnhancedNotePage() {
                     </CardHeader>
                     <CardContent>
                       <div className="prose max-w-none">
-                        <pre className="whitespace-pre-wrap text-sm bg-gray-50 p-4 rounded-lg">
+                        <pre className="whitespace-pre-wrap text-sm bg-muted p-4 rounded-lg text-foreground">
                           {note.originalContent}
                         </pre>
                       </div>
@@ -403,9 +403,9 @@ export default function EnhancedNotePage() {
                   </Card>
 
                   {/* Enhanced Content */}
-                  <Card>
+                  <Card className="border border-border bg-card">
                     <CardHeader>
-                      <CardTitle className="flex items-center justify-between">
+                      <CardTitle className="flex items-center justify-between text-foreground">
                         <span>Enhanced Content</span>
                         <div className="flex items-center space-x-2">
                           <Button
@@ -445,9 +445,9 @@ export default function EnhancedNotePage() {
               )}
 
               {activeTab === 'original' && (
-                <Card>
+                <Card className="border border-border bg-card">
                   <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
+                    <CardTitle className="flex items-center justify-between text-foreground">
                       <span>Original Content</span>
                       <div className="flex items-center space-x-2">
                         <Button
@@ -470,7 +470,7 @@ export default function EnhancedNotePage() {
                   </CardHeader>
                   <CardContent>
                     <div className="prose max-w-none">
-                      <pre className="whitespace-pre-wrap text-sm bg-gray-50 p-4 rounded-lg">
+                      <pre className="whitespace-pre-wrap text-sm bg-muted p-4 rounded-lg text-foreground">
                         {note.originalContent}
                       </pre>
                     </div>
@@ -479,9 +479,9 @@ export default function EnhancedNotePage() {
               )}
 
               {activeTab === 'enhanced' && (
-                <Card>
+                <Card className="border border-border bg-card">
                   <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
+                    <CardTitle className="flex items-center justify-between text-foreground">
                       <span>Enhanced Content</span>
                       <div className="flex items-center space-x-2">
                         <Button
@@ -524,13 +524,13 @@ export default function EnhancedNotePage() {
           {/* AI Features */}
           {activeTab === 'ai' && (
             <div className="space-y-6">
-              <Card>
+              <Card className="border border-border bg-card">
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Sparkles className="mr-2 h-5 w-5 text-purple-600" />
+                  <CardTitle className="flex items-center text-foreground">
+                    <Sparkles className="mr-2 h-5 w-5 text-primary" />
                     AI Study Assistant
                   </CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-muted-foreground">
                     Use AI to generate summaries, quizzes, and get answers about your notes
                   </CardDescription>
                 </CardHeader>
@@ -538,7 +538,7 @@ export default function EnhancedNotePage() {
                   {/* Summary Generation */}
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-medium flex items-center">
+                      <h3 className="text-lg font-medium flex items-center text-foreground">
                         <BookOpen className="mr-2 h-4 w-4" />
                         Smart Summary
                       </h3>
@@ -556,9 +556,9 @@ export default function EnhancedNotePage() {
                       </Button>
                     </div>
                     {summary && (
-                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                        <h4 className="font-medium text-blue-900 mb-2">Summary:</h4>
-                        <div className="prose prose-sm max-w-none text-blue-800">
+                      <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+                        <h4 className="font-medium text-primary mb-2">Summary:</h4>
+                        <div className="prose prose-sm max-w-none text-foreground">
                           <ReactMarkdown>{summary}</ReactMarkdown>
                         </div>
                       </div>
@@ -568,7 +568,7 @@ export default function EnhancedNotePage() {
                   {/* Quiz Generation */}
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-medium flex items-center">
+                      <h3 className="text-lg font-medium flex items-center text-foreground">
                         <HelpCircle className="mr-2 h-4 w-4" />
                         Interactive Quiz
                       </h3>
@@ -588,8 +588,8 @@ export default function EnhancedNotePage() {
                     {showQuiz && quiz.length > 0 && (
                       <div className="space-y-4">
                         {quiz.map((question, index) => (
-                          <div key={index} className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                            <h4 className="font-medium mb-3">Question {index + 1}: {question.question}</h4>
+                          <div key={index} className="bg-muted border border-border rounded-lg p-4">
+                            <h4 className="font-medium mb-3 text-foreground">Question {index + 1}: {question.question}</h4>
                             <div className="space-y-2">
                               {question.options.map((option, optionIndex) => (
                                 <label key={optionIndex} className="flex items-center space-x-2 cursor-pointer">
@@ -598,17 +598,17 @@ export default function EnhancedNotePage() {
                                     name={`question-${index}`}
                                     checked={quizAnswers[index] === optionIndex}
                                     onChange={() => handleQuizAnswer(index, optionIndex)}
-                                    className="text-blue-600"
+                                    className="text-primary"
                                   />
-                                  <span className="text-sm">{option}</span>
+                                  <span className="text-sm text-foreground">{option}</span>
                                 </label>
                               ))}
                             </div>
                             {quizResults && (
                               <div className={`mt-3 p-2 rounded text-sm ${
                                 quizAnswers[index] === question.correctAnswer 
-                                  ? 'bg-green-100 text-green-800' 
-                                  : 'bg-red-100 text-red-800'
+                                  ? 'bg-green-500/10 text-green-500 border border-green-500/20' 
+                                  : 'bg-red-500/10 text-red-500 border border-red-500/20'
                               }`}>
                                 <strong>Explanation:</strong> {question.explanation}
                               </div>
@@ -621,12 +621,12 @@ export default function EnhancedNotePage() {
                           </Button>
                         )}
                         {quizResults && (
-                          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-                            <h4 className="font-medium text-blue-900 mb-2">Quiz Results</h4>
-                            <p className="text-blue-800">
+                          <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 text-center">
+                            <h4 className="font-medium text-primary mb-2">Quiz Results</h4>
+                            <p className="text-foreground">
                               You got {quizResults.correct} out of {quizResults.total} questions correct!
                             </p>
-                            <p className="text-sm text-blue-600 mt-1">
+                            <p className="text-sm text-muted-foreground mt-1">
                               Score: {Math.round((quizResults.correct / quizResults.total) * 100)}%
                             </p>
                           </div>
@@ -637,7 +637,7 @@ export default function EnhancedNotePage() {
 
                   {/* Q&A */}
                   <div className="space-y-4">
-                    <h3 className="text-lg font-medium flex items-center">
+                    <h3 className="text-lg font-medium flex items-center text-foreground">
                       <HelpCircle className="mr-2 h-4 w-4" />
                       Ask Questions
                     </h3>
@@ -648,7 +648,7 @@ export default function EnhancedNotePage() {
                           value={userQuestion}
                           onChange={(e) => setUserQuestion(e.target.value)}
                           placeholder="Ask a question about your notes..."
-                          className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="flex-1 px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground"
                           onKeyPress={(e) => e.key === 'Enter' && handleAskQuestion()}
                         />
                         <Button
@@ -664,9 +664,9 @@ export default function EnhancedNotePage() {
                         </Button>
                       </div>
                       {answer && (
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                          <h4 className="font-medium text-green-900 mb-2">Answer:</h4>
-                          <div className="prose prose-sm max-w-none text-green-800">
+                        <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">
+                          <h4 className="font-medium text-green-500 mb-2">Answer:</h4>
+                          <div className="prose prose-sm max-w-none text-foreground">
                             <ReactMarkdown>{answer}</ReactMarkdown>
                           </div>
                         </div>
@@ -677,7 +677,7 @@ export default function EnhancedNotePage() {
                   {/* Flashcard Generation */}
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-medium flex items-center">
+                      <h3 className="text-lg font-medium flex items-center text-foreground">
                         <BookOpen className="mr-2 h-4 w-4" />
                         Generate Flashcards
                       </h3>
@@ -694,7 +694,7 @@ export default function EnhancedNotePage() {
                         Create Flashcards
                       </Button>
                     </div>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-muted-foreground">
                       Generate AI-powered flashcards from this note for spaced repetition review.
                     </p>
                   </div>

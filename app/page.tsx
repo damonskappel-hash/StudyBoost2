@@ -51,7 +51,7 @@ function LandingPage() {
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <Brain className="h-8 w-8 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-900 tracking-tight">StudyBoost</span>
+            <span className="text-2xl font-bold text-gray-900 tracking-tight">NoteBoost</span>
           </div>
           <div className="flex items-center space-x-4">
             <Link href="/pricing">
@@ -200,7 +200,7 @@ function LandingPage() {
                   ))}
                 </div>
                 <p className="text-gray-600 mb-4 font-medium leading-relaxed">
-                  "StudyBoost transformed my messy lecture notes into comprehensive study guides. 
+                  "NoteBoost transformed my messy lecture notes into comprehensive study guides. 
                   The AI-generated questions helped me ace my finals!"
                 </p>
                 <div className="flex items-center">
@@ -271,7 +271,7 @@ function LandingPage() {
             Ready to Transform Your Study Habits?
           </h2>
           <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto font-medium leading-relaxed">
-            Join thousands of students who are already studying smarter with StudyBoost. 
+            Join thousands of students who are already studying smarter with NoteBoost. 
             Start with 5 free notes today.
           </p>
           <SignInButton>
@@ -289,7 +289,7 @@ function LandingPage() {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-3 mb-6 md:mb-0">
               <Brain className="h-6 w-6 text-blue-400" />
-              <span className="text-xl font-bold tracking-tight">StudyBoost</span>
+              <span className="text-xl font-bold tracking-tight">NoteBoost</span>
             </div>
             <div className="flex space-x-8 text-sm text-gray-400">
               <Link href="/pricing" className="hover:text-white font-medium transition-colors">Pricing</Link>
@@ -299,7 +299,7 @@ function LandingPage() {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-            <p>&copy; 2024 StudyBoost. All rights reserved.</p>
+            <p>&copy; 2024 NoteBoost. All rights reserved.</p>
           </div>
         </div>
       </footer>

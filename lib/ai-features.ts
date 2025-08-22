@@ -1,4 +1,4 @@
-// AI Features for StudyBoost
+// AI Features for NoteBoost
 export interface QuizQuestion {
   question: string
   options: string[]

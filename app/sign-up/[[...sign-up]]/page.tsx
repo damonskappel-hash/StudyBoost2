@@ -5,7 +5,7 @@ export default function SignUpPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Join StudyBoost</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Join NoteBoost</h1>
           <p className="text-gray-600">Create your account to get started</p>
         </div>
         <SignUp 

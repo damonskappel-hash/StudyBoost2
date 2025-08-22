@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'StudyBoost - AI Lecture Note Enhancer',
+  title: 'NoteBoost - AI Lecture Note Enhancer',
   description: 'Transform messy student notes into organized, enhanced study materials',
 }
 
