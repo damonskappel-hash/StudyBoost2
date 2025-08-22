@@ -213,10 +213,10 @@ export default function EnhancePage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Please sign in</h1>
-          <p className="text-gray-600">You need to be signed in to enhance notes.</p>
+          <h1 className="text-2xl font-semibold mb-4 text-foreground">Please sign in</h1>
+          <p className="text-muted-foreground">You need to be signed in to enhance notes.</p>
         </div>
       </div>
     )
@@ -224,38 +224,38 @@ export default function EnhancePage() {
 
   return (
     <AppLayout>
-      <div className="p-8">
+      <div className="p-6">
         <div className="max-w-4xl mx-auto">
           {/* Page Header */}
-          <div className="mb-10">
-            <h1 className="text-4xl font-bold text-gray-900 mb-3 tracking-tight">
+          <div className="mb-8">
+            <h1 className="text-3xl font-semibold text-foreground mb-2 tracking-tight">
               Enhance Your Notes
             </h1>
-            <p className="text-xl text-gray-600 font-medium">
+            <p className="text-base text-muted-foreground">
               Upload your lecture notes and let AI transform them into organized study materials
             </p>
           </div>
 
           {/* Processing Progress */}
           {isProcessing && (
-            <Card className="mb-8 shadow-sm hover:shadow-md transition-all duration-200 border-0 bg-white">
+            <Card className="mb-8 border border-border bg-card shadow-sm">
               <CardHeader className="pb-4">
-                <CardTitle className="flex items-center text-lg font-semibold text-gray-800 tracking-wide">
-                  <Brain className="mr-2 h-5 w-5 text-blue-600" />
+                <CardTitle className="flex items-center text-base font-medium text-foreground">
+                  <Brain className="mr-2 h-4 w-4 text-primary" />
                   Enhancing Your Note
                 </CardTitle>
-                <CardDescription className="text-gray-600">
+                <CardDescription className="text-muted-foreground">
                   Our AI is analyzing and improving your content...
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0">
-                <div className="w-full h-4 rounded-full bg-gray-100 overflow-hidden mb-4">
+                <div className="w-full h-2 rounded-full bg-muted overflow-hidden mb-4">
                   <div
-                    className="h-4 rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 transition-all duration-500 ease-out"
+                    className="h-2 rounded-full bg-gradient-to-r from-primary via-primary/80 to-primary/60 transition-all duration-500 ease-out"
                     style={{ width: `${progress}%` }}
                   />
                 </div>
-                <p className="text-sm font-medium text-gray-700">
+                <p className="text-sm font-medium text-muted-foreground">
                   {progress < 30 && "Creating note..."}
                   {progress >= 30 && progress < 50 && "Processing content..."}
                   {progress >= 50 && progress < 70 && "Applying AI enhancements..."}
@@ -269,28 +269,28 @@ export default function EnhancePage() {
             </Card>
           )}
 
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-3 gap-6">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-6">
               {/* File Upload */}
-              <Card className="shadow-sm hover:shadow-md transition-all duration-200 border-0 bg-white">
+              <Card className="border border-border bg-card shadow-sm">
                 <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center text-lg font-semibold text-gray-800 tracking-wide">
-                    <Upload className="mr-2 h-5 w-5 text-blue-600" />
+                  <CardTitle className="flex items-center text-base font-medium text-foreground">
+                    <Upload className="mr-2 h-4 w-4 text-primary" />
                     Upload Note
                   </CardTitle>
-                  <CardDescription className="text-gray-600">
+                  <CardDescription className="text-muted-foreground">
                     Upload a file or paste your notes directly
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4 pt-0">
-                                           <div className="border-2 border-dashed border-blue-200 rounded-lg p-8 text-center hover:border-blue-300 transition-colors">
-                           {file?.type.startsWith('audio/') ? (
-                             <Mic className="h-12 w-12 text-purple-400 mx-auto mb-4" />
-                           ) : (
-                             <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                           )}
-                    <p className="text-gray-600 mb-4">
+                  <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary/50 transition-colors bg-muted/30">
+                    {file?.type.startsWith('audio/') ? (
+                      <Mic className="h-12 w-12 text-primary mx-auto mb-4" />
+                    ) : (
+                      <Upload className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    )}
+                    <p className="text-muted-foreground mb-4">
                       Drag and drop your file here, or click to browse
                     </p>
                     <Input
@@ -302,71 +302,68 @@ export default function EnhancePage() {
                       disabled={isFileProcessing}
                     />
                     <label htmlFor="file-upload">
-                      <Button variant="outline" asChild disabled={isFileProcessing} className="border-blue-300 text-blue-700 hover:bg-blue-50 font-semibold px-6 py-2 rounded-lg transition-all duration-200">
+                      <Button variant="outline" asChild disabled={isFileProcessing} className="h-9">
                         <span>{isFileProcessing ? "Processing..." : "Choose File"}</span>
                       </Button>
                     </label>
-                                                                   <p className="text-xs text-gray-500 mt-2">
+                    <p className="text-xs text-muted-foreground mt-2">
                       Supporting: TXT, DOCX, Images, Audio - max {has?.({ plan: 'pro' }) ? '100MB' : has?.({ plan: 'student' }) ? '50MB' : '10MB'}
                     </p>
-                    <p className="text-xs text-green-600 mt-1">
-                      ✨ OCR & Audio Transcription enabled
-                    </p>
+                    
+                    {isFileProcessing && (
+                      <div className="flex items-center space-x-2 p-4 bg-primary/10 rounded-lg border border-primary/20">
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary"></div>
+                        <span className="text-sm font-medium text-primary">
+                          {file?.type.startsWith('image/')
+                            ? 'Extracting text from image (this may take a moment)...'
+                            : file?.type.startsWith('audio/')
+                            ? 'Transcribing audio (this may take 2-10 minutes)...'
+                            : 'Processing file...'
+                          }
+                        </span>
+                      </div>
+                    )}
+                    
+                    {file && !isFileProcessing && (
+                      <div className="flex items-center space-x-2 p-4 bg-green-500/10 rounded-lg border border-green-500/20">
+                        <CheckCircle className="h-5 w-5 text-green-500" />
+                        <span className="text-sm font-medium text-green-500">
+                          {file.name}
+                          {file.type.startsWith('audio/') && ' (Transcribed successfully)'}
+                        </span>
+                      </div>
+                    )}
                   </div>
-                  
-                  {isFileProcessing && (
-                    <div className="flex items-center space-x-2 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
-                                                   <span className="text-sm font-medium text-blue-800">
-                               {file?.type.startsWith('image/')
-                                 ? 'Extracting text from image (this may take a moment)...'
-                                 : file?.type.startsWith('audio/')
-                                 ? 'Transcribing audio (this may take 2-10 minutes)...'
-                                 : 'Processing file...'
-                               }
-                             </span>
-                    </div>
-                  )}
-                  
-                                           {file && !isFileProcessing && (
-                           <div className="flex items-center space-x-2 p-4 bg-green-50 rounded-lg border border-green-200">
-                             <CheckCircle className="h-5 w-5 text-green-600" />
-                             <span className="text-sm font-medium text-green-800">
-                               {file.name}
-                               {file.type.startsWith('audio/') && ' (Transcribed successfully)'}
-                             </span>
-                           </div>
-                         )}
                 </CardContent>
               </Card>
 
               {/* Note Details */}
-              <Card className="shadow-sm hover:shadow-md transition-all duration-200 border-0 bg-white">
+              <Card className="border border-border bg-card shadow-sm">
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-lg font-semibold text-gray-800 tracking-wide">Note Details</CardTitle>
-                  <CardDescription className="text-gray-600">
+                  <CardTitle className="text-base font-medium text-foreground">Note Details</CardTitle>
+                  <CardDescription className="text-muted-foreground">
                     Provide information about your note
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6 pt-0">
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    <label className="block text-sm font-semibold text-muted-foreground mb-3">
                       Title *
                     </label>
                     <Input
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
                       placeholder="Enter note title"
-                      className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-lg"
+                      className="border-border focus:border-primary focus:ring-primary rounded-lg"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    <label className="block text-sm font-semibold text-muted-foreground mb-3">
                       Subject *
                     </label>
                     <Select value={subject} onValueChange={setSubject}>
-                      <SelectTrigger className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-lg">
+                      <SelectTrigger className="border-border focus:border-primary focus:ring-primary rounded-lg">
                         <SelectValue placeholder="Select subject" />
                       </SelectTrigger>
                       <SelectContent>
@@ -381,7 +378,7 @@ export default function EnhancePage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    <label className="block text-sm font-semibold text-muted-foreground mb-3">
                       Content *
                     </label>
                     <Textarea
@@ -389,9 +386,9 @@ export default function EnhancePage() {
                       onChange={(e) => setContent(e.target.value)}
                       placeholder="Paste your notes here or upload a file above..."
                       rows={10}
-                      className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-lg"
+                      className="border-border focus:border-primary focus:ring-primary rounded-lg"
                     />
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                       💡 You can also paste text manually or upload files above
                     </p>
                   </div>
@@ -401,13 +398,13 @@ export default function EnhancePage() {
 
             {/* Enhancement Settings */}
             <div className="space-y-6">
-              <Card className="shadow-sm hover:shadow-md transition-all duration-200 border-0 bg-white">
+              <Card className="border border-border bg-card shadow-sm">
                 <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center text-lg font-semibold text-gray-800 tracking-wide">
-                    <Settings className="mr-2 h-5 w-5 text-blue-600" />
+                  <CardTitle className="flex items-center text-base font-medium text-foreground">
+                    <Settings className="mr-2 h-4 w-4 text-primary" />
                     Enhancement Settings
                   </CardTitle>
-                  <CardDescription className="text-gray-600">
+                  <CardDescription className="text-muted-foreground">
                     Choose how you want your notes enhanced
                   </CardDescription>
                 </CardHeader>
@@ -421,9 +418,9 @@ export default function EnhancePage() {
                           ...prev,
                           includeDefinitions: e.target.checked
                         }))}
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        className="rounded border-border text-primary focus:ring-primary"
                       />
-                      <span className="text-sm font-medium text-gray-700">Include definitions</span>
+                      <span className="text-sm font-medium text-muted-foreground">Include definitions</span>
                     </label>
 
                     <label className="flex items-center space-x-3">
@@ -435,11 +432,11 @@ export default function EnhancePage() {
                           generateQuestions: e.target.checked
                         }))}
                         disabled={!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })}
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 disabled:opacity-50"
+                        className="rounded border-border text-primary focus:ring-primary disabled:opacity-50"
                       />
-                      <span className={`text-sm font-medium ${(!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })) ? 'text-gray-400' : 'text-gray-700'}`}>
+                      <span className={`text-sm font-medium ${(!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })) ? 'text-muted-foreground' : 'text-muted-foreground'}`}>
                         Generate study questions
-                        {(!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })) && <span className="text-xs text-blue-600 ml-2">(Student/Pro only)</span>}
+                        {(!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })) && <span className="text-xs text-primary ml-2">(Student/Pro only)</span>}
                       </span>
                     </label>
 
@@ -452,11 +449,11 @@ export default function EnhancePage() {
                           createSummary: e.target.checked
                         }))}
                         disabled={!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })}
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 disabled:opacity-50"
+                        className="rounded border-border text-primary focus:ring-primary disabled:opacity-50"
                       />
-                      <span className={`text-sm font-medium ${(!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })) ? 'text-gray-400' : 'text-gray-700'}`}>
+                      <span className={`text-sm font-medium ${(!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })) ? 'text-muted-foreground' : 'text-muted-foreground'}`}>
                         Create summaries
-                        {(!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })) && <span className="text-xs text-blue-600 ml-2">(Student/Pro only)</span>}
+                        {(!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })) && <span className="text-xs text-primary ml-2">(Student/Pro only)</span>}
                       </span>
                     </label>
 
@@ -469,11 +466,11 @@ export default function EnhancePage() {
                           addExamples: e.target.checked
                         }))}
                         disabled={!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })}
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 disabled:opacity-50"
+                        className="rounded border-border text-primary focus:ring-primary disabled:opacity-50"
                       />
-                      <span className={`text-sm font-medium ${(!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })) ? 'text-gray-400' : 'text-gray-700'}`}>
+                      <span className={`text-sm font-medium ${(!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })) ? 'text-muted-foreground' : 'text-muted-foreground'}`}>
                         Add examples
-                        {(!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })) && <span className="text-xs text-blue-600 ml-2">(Student/Pro only)</span>}
+                        {(!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })) && <span className="text-xs text-primary ml-2">(Student/Pro only)</span>}
                       </span>
                     </label>
 
@@ -486,22 +483,22 @@ export default function EnhancePage() {
                           autoGenerateFlashcards: e.target.checked
                         }))}
                         disabled={!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })}
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 disabled:opacity-50"
+                        className="rounded border-border text-primary focus:ring-primary disabled:opacity-50"
                       />
-                      <span className={`text-sm font-medium ${(!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })) ? 'text-gray-400' : 'text-gray-700'}`}>
+                      <span className={`text-sm font-medium ${(!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })) ? 'text-muted-foreground' : 'text-muted-foreground'}`}>
                         Auto-generate flashcards
-                        {(!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })) && <span className="text-xs text-blue-600 ml-2">(Student/Pro only)</span>}
+                        {(!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })) && <span className="text-xs text-primary ml-2">(Student/Pro only)</span>}
                       </span>
                     </label>
                     {enhancementSettings.autoGenerateFlashcards && (
-                      <p className="text-xs text-blue-600 ml-6 font-medium">
+                      <p className="text-xs text-primary ml-6 font-medium">
                         💡 Creates 10 study flashcards automatically after enhancement
                       </p>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    <label className="block text-sm font-semibold text-muted-foreground mb-3">
                       Structure Level
                     </label>
                     <Select 
@@ -511,7 +508,7 @@ export default function EnhancePage() {
                       }
                       disabled={!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })}
                     >
-                      <SelectTrigger className={`border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-lg ${(!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })) ? 'opacity-50' : ''}`}>
+                      <SelectTrigger className={`border-border focus:border-primary focus:ring-primary rounded-lg ${(!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })) ? 'opacity-50' : ''}`}>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -521,7 +518,7 @@ export default function EnhancePage() {
                       </SelectContent>
                     </Select>
                     {(!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })) && (
-                      <p className="text-xs text-blue-600 mt-1">
+                      <p className="text-xs text-primary mt-1">
                         💡 Upgrade to Student/Pro for advanced structure options
                       </p>
                     )}
@@ -530,23 +527,23 @@ export default function EnhancePage() {
               </Card>
 
               {/* Action Button */}
-              <Card className="shadow-sm hover:shadow-md transition-all duration-200 border-0 bg-white">
+              <Card className="border border-border bg-card shadow-sm">
                 <CardContent className="pt-6">
-                                     {isContentTooLong && (
-                     <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                       <p className="text-sm font-medium text-yellow-800">
-                         ⚠️ Content is quite long ({estimatedTokens} estimated tokens). 
-                         Consider breaking it into smaller sections for better results.
-                       </p>
-                     </div>
-                   )}
-                   
-                   <Button 
-                     onClick={handleEnhance}
-                     disabled={isProcessing || !title.trim() || !content.trim() || !subject}
-                     className="w-full bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 hover:from-blue-700 hover:via-blue-800 hover:to-indigo-800 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 h-12 text-base"
-                     size="lg"
-                   >
+                  {isContentTooLong && (
+                    <div className="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                      <p className="text-sm font-medium text-yellow-500">
+                        ⚠️ Content is quite long ({estimatedTokens} estimated tokens). 
+                        Consider breaking it into smaller sections for better results.
+                      </p>
+                    </div>
+                  )}
+                  
+                  <Button 
+                    onClick={handleEnhance}
+                    disabled={isProcessing || !title.trim() || !content.trim() || !subject}
+                    className="w-full bg-gradient-to-r from-primary via-primary/80 to-indigo-700 hover:from-primary/80 hover:via-primary/90 hover:to-indigo-800 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 h-12 text-base"
+                    size="lg"
+                  >
                     {isProcessing ? (
                       <>
                         <Brain className="mr-3 h-5 w-5 animate-spin" />
