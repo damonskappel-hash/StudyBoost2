@@ -66,12 +66,14 @@ export const generateFlashcardsAction = action({
 
     // Check if OpenAI API key is available
     if (!process.env.OPENAI_API_KEY) {
+      console.error('OpenAI API key is missing');
       throw new Error('OpenAI API key is not configured. Please set the OPENAI_API_KEY environment variable.');
     }
 
     // Check content length
     const estimatedTokens = Math.ceil(content.length / 4);
     if (estimatedTokens > 4000) {
+      console.error('Content too long:', estimatedTokens, 'tokens');
       throw new Error('Content is too long. Please use shorter notes for flashcard generation.');
     }
 
@@ -119,6 +121,7 @@ Content: ${content.substring(0, 2000)}`;
       const responseText = completion.choices[0]?.message?.content;
 
       if (!responseText) {
+        console.error('No response from OpenAI');
         throw new Error('No response from OpenAI');
       }
 
@@ -142,6 +145,7 @@ Content: ${content.substring(0, 2000)}`;
 
       // Validate the flashcard structure
       if (!Array.isArray(flashcards) || flashcards.length === 0) {
+        console.error('No valid flashcards generated');
         throw new Error('No valid flashcards generated');
       }
 
@@ -165,6 +169,7 @@ Content: ${content.substring(0, 2000)}`;
       console.log(`Generated ${validFlashcards.length} valid flashcards`);
 
       if (validFlashcards.length === 0) {
+        console.error('No valid flashcards after filtering');
         throw new Error('No valid flashcards could be generated. Please try again.');
       }
 
@@ -179,6 +184,13 @@ Content: ${content.substring(0, 2000)}`;
 
     } catch (error: any) {
       console.error('Flashcard generation error:', error);
+      console.error('Error details:', {
+        message: error.message,
+        name: error.name,
+        stack: error.stack,
+        code: error.code,
+        status: error.status
+      });
       
       // Provide specific error messages
       if (error.message?.includes('rate limit')) {
