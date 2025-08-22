@@ -39,7 +39,10 @@ export default function EnhancedNotePage() {
   const noteId = params.noteId as unknown as Id<'notes'>
   const toast = useToast()
   const [activeTab, setActiveTab] = useState<'original' | 'enhanced' | 'split' | 'ai'>('split')
-  const [aiLoading, setAiLoading] = useState(false)
+  const [summaryLoading, setSummaryLoading] = useState(false)
+  const [quizLoading, setQuizLoading] = useState(false)
+  const [qaLoading, setQaLoading] = useState(false)
+  const [flashcardLoading, setFlashcardLoading] = useState(false)
   const [summary, setSummary] = useState<string>('')
   const [quiz, setQuiz] = useState<QuizQuestion[]>([])
   const [userQuestion, setUserQuestion] = useState('')
@@ -145,7 +148,7 @@ export default function EnhancedNotePage() {
   const handleGenerateSummary = async () => {
     if (!note?.originalContent) return
     
-    setAiLoading(true)
+    setSummaryLoading(true)
     try {
       const subject = note.subject || 'General'
       const result = await generateSummary(note.originalContent, subject)
@@ -159,14 +162,14 @@ export default function EnhancedNotePage() {
       console.error("Summary generation error:", error)
       toast.error("Failed to generate summary")
     } finally {
-      setAiLoading(false)
+      setSummaryLoading(false)
     }
   }
 
   const handleGenerateQuiz = async () => {
     if (!note?.originalContent) return
     
-    setAiLoading(true)
+    setQuizLoading(true)
     try {
       const subject = note.subject || 'General'
       const result = await generateQuiz(note.originalContent, subject, 5)
@@ -183,14 +186,14 @@ export default function EnhancedNotePage() {
       console.error("Quiz generation error:", error)
       toast.error("Failed to generate quiz")
     } finally {
-      setAiLoading(false)
+      setQuizLoading(false)
     }
   }
 
   const handleAskQuestion = async () => {
     if (!note?.originalContent || !userQuestion.trim()) return
     
-    setAiLoading(true)
+    setQaLoading(true)
     try {
       const subject = note.subject || 'General'
       const result = await askQuestion(note.originalContent, subject, userQuestion)
@@ -204,7 +207,7 @@ export default function EnhancedNotePage() {
       console.error("Q&A error:", error)
       toast.error("Failed to get answer")
     } finally {
-      setAiLoading(false)
+      setQaLoading(false)
     }
   }
 
@@ -225,7 +228,7 @@ export default function EnhancedNotePage() {
   const handleGenerateFlashcards = async () => {
     if (!note?.originalContent) return
     
-    setAiLoading(true)
+    setFlashcardLoading(true)
     try {
       // Generate flashcards using the action
       const result = await generateFlashcardsAction({
@@ -249,7 +252,7 @@ export default function EnhancedNotePage() {
       console.error("Flashcard generation error:", error)
       toast.error("Failed to generate flashcards")
     } finally {
-      setAiLoading(false)
+      setFlashcardLoading(false)
     }
   }
 
@@ -544,10 +547,10 @@ export default function EnhancedNotePage() {
                       </h3>
                       <Button
                         onClick={handleGenerateSummary}
-                        disabled={aiLoading || !note.originalContent}
+                        disabled={summaryLoading || !note.originalContent}
                         size="sm"
                       >
-                        {aiLoading ? (
+                        {summaryLoading ? (
                           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                         ) : (
                           <Sparkles className="h-4 w-4 mr-2" />
@@ -574,10 +577,10 @@ export default function EnhancedNotePage() {
                       </h3>
                       <Button
                         onClick={handleGenerateQuiz}
-                        disabled={aiLoading || !note.originalContent}
+                        disabled={quizLoading || !note.originalContent}
                         size="sm"
                       >
-                        {aiLoading ? (
+                        {quizLoading ? (
                           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                         ) : (
                           <Sparkles className="h-4 w-4 mr-2" />
@@ -653,10 +656,10 @@ export default function EnhancedNotePage() {
                         />
                         <Button
                           onClick={handleAskQuestion}
-                          disabled={aiLoading || !userQuestion.trim()}
+                          disabled={qaLoading || !userQuestion.trim()}
                           size="sm"
                         >
-                          {aiLoading ? (
+                          {qaLoading ? (
                             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
                           ) : (
                             'Ask'
@@ -683,10 +686,10 @@ export default function EnhancedNotePage() {
                       </h3>
                       <Button
                         onClick={handleGenerateFlashcards}
-                        disabled={aiLoading || !note.originalContent}
+                        disabled={flashcardLoading || !note.originalContent}
                         size="sm"
                       >
-                        {aiLoading ? (
+                        {flashcardLoading ? (
                           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                         ) : (
                           <Plus className="h-4 w-4 mr-2" />
