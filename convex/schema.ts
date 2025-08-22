@@ -9,7 +9,7 @@ export default defineSchema({
     subscriptionTier: v.union(
       v.literal("free"),
       v.literal("student"),
-      v.literal("premium")
+      v.literal("pro")
     ),
     subscriptionStatus: v.union(
       v.literal("active"),
@@ -63,7 +63,7 @@ export default defineSchema({
     tier: v.union(
       v.literal("free"),
       v.literal("student"),
-      v.literal("premium")
+      v.literal("pro")
     ),
     status: v.string(),
     currentPeriodStart: v.optional(v.number()),

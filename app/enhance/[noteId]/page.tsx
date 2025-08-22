@@ -228,6 +228,15 @@ export default function EnhancedNotePage() {
   const handleGenerateFlashcards = async () => {
     if (!note?.originalContent) return
     
+    // Check if user has access to flashcard generation
+    const hasStudentPlan = has?.({ plan: 'student' })
+    const hasProPlan = has?.({ plan: 'pro' })
+    
+    if (!hasStudentPlan && !hasProPlan) {
+      toast.error('Flashcard generation is only available for Student and Pro plans. Upgrade to create flashcards!')
+      return
+    }
+    
     setFlashcardLoading(true)
     try {
       // Generate flashcards using the action
@@ -686,7 +695,7 @@ export default function EnhancedNotePage() {
                       </h3>
                       <Button
                         onClick={handleGenerateFlashcards}
-                        disabled={flashcardLoading || !note.originalContent}
+                        disabled={flashcardLoading || !note.originalContent || (!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' }))}
                         size="sm"
                       >
                         {flashcardLoading ? (
@@ -699,6 +708,9 @@ export default function EnhancedNotePage() {
                     </div>
                     <p className="text-sm text-muted-foreground">
                       Generate AI-powered flashcards from this note for spaced repetition review.
+                      {(!has?.({ plan: 'student' }) && !has?.({ plan: 'pro' })) && (
+                        <span className="text-primary ml-1">(Student/Pro only)</span>
+                      )}
                     </p>
                   </div>
                 </CardContent>
