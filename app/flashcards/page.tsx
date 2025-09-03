@@ -76,8 +76,8 @@ export default function FlashcardsPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Please sign in</h1>
-          <p className="text-gray-600">You need to be signed in to access flashcards.</p>
+          <h1 className="text-2xl font-bold mb-4 text-foreground">Please sign in</h1>
+          <p className="text-muted-foreground">You need to be signed in to access flashcards.</p>
         </div>
       </div>
     )
@@ -87,8 +87,8 @@ export default function FlashcardsPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading your flashcards...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading your flashcards...</p>
         </div>
       </div>
     )
@@ -316,15 +316,15 @@ export default function FlashcardsPage() {
           {/* How It Works */}
           {hasCards && (
             <div className="mb-6">
-              <Card className="bg-blue-50 border-blue-200">
+              <Card className="bg-blue-50 dark:bg-blue-950/50 border-blue-200 dark:border-blue-800">
                 <CardContent className="pt-6">
                   <div className="flex items-start space-x-3">
-                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <BookOpen className="h-4 w-4 text-blue-600" />
+                    <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/50 rounded-lg flex items-center justify-center">
+                      <BookOpen className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-blue-900 mb-1">How to Study</h3>
-                      <p className="text-sm text-blue-800">
+                      <h3 className="font-medium text-blue-900 dark:text-blue-100 mb-1">How to Study</h3>
+                      <p className="text-sm text-blue-800 dark:text-blue-200">
                         1. Choose "Review Due Cards" or "Review All Cards" • 2. Read the question and think of your answer • 
                         3. Click "Show Answer" to reveal the correct answer • 4. Click "Correct" or "Incorrect" • 
                         5. Complete all cards to see your results at the end!
@@ -374,19 +374,19 @@ export default function FlashcardsPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Review Interface */}
               <div className="lg:col-span-2">
-                <Card className="min-h-[600px] shadow-md border-blue-200">
-                  <CardHeader className="border-b border-blue-200 bg-white">
+                <Card className="min-h-[600px] shadow-md border-blue-200 dark:border-blue-800">
+                  <CardHeader className="border-b border-blue-200 dark:border-blue-800 bg-white dark:bg-card">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
                         <div className="flex items-center space-x-2">
-                          <BookOpen className="h-5 w-5 text-blue-600" />
-                          <CardTitle className="text-lg font-semibold">Review Card {currentCardIndex + 1} of {sessionCards.length}</CardTitle>
+                          <BookOpen className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                          <CardTitle className="text-lg font-semibold text-foreground">Review Card {currentCardIndex + 1} of {sessionCards.length}</CardTitle>
                         </div>
-                        <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200 px-3 py-1 rounded-full text-sm font-medium">
+                        <Badge variant="secondary" className="bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 border-blue-200 dark:border-blue-700 px-3 py-1 rounded-full text-sm font-medium">
                           {currentCard?.subject}
                         </Badge>
                       </div>
-                      <div className="text-sm font-medium text-blue-600">
+                      <div className="text-sm font-medium text-blue-600 dark:text-blue-400">
                         {Math.round(((currentCardIndex + 1) / sessionCards.length) * 100)}% Complete
                       </div>
                     </div>
@@ -398,13 +398,13 @@ export default function FlashcardsPage() {
                         <div className="space-y-4">
                           <div className="flex items-center space-x-2">
                             <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                            <h3 className="text-lg font-semibold text-blue-900">Question</h3>
+                            <h3 className="text-lg font-semibold text-foreground">Question</h3>
                           </div>
-                                                      <div className="bg-white border border-blue-200 rounded-2xl p-6 shadow-sm">
-                              <div className="prose prose-lg max-w-none text-blue-900">
-                                <ReactMarkdown>{currentCard.question}</ReactMarkdown>
-                              </div>
+                          <div className="bg-white dark:bg-card border border-blue-200 dark:border-blue-800 rounded-2xl p-6 shadow-sm">
+                            <div className="prose prose-lg max-w-none text-foreground">
+                              <ReactMarkdown>{currentCard.question}</ReactMarkdown>
                             </div>
+                          </div>
                         </div>
 
                         {/* Answer Section */}
@@ -412,10 +412,10 @@ export default function FlashcardsPage() {
                           <div className="space-y-4">
                             <div className="flex items-center space-x-2">
                               <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                              <h3 className="text-lg font-semibold text-blue-900">Answer</h3>
+                              <h3 className="text-lg font-semibold text-foreground">Answer</h3>
                             </div>
-                            <div className="bg-green-50 border border-green-200 rounded-2xl p-6 shadow-sm">
-                              <div className="prose prose-lg max-w-none text-blue-900">
+                            <div className="bg-green-50 dark:bg-green-950/50 border border-green-200 dark:border-green-800 rounded-2xl p-6 shadow-sm">
+                              <div className="prose prose-lg max-w-none text-foreground">
                                 <ReactMarkdown>{currentCard.answer}</ReactMarkdown>
                               </div>
                             </div>
@@ -429,7 +429,7 @@ export default function FlashcardsPage() {
                             onClick={() => setShowAnswer(!showAnswer)}
                             variant="outline"
                             size="lg"
-                            className="min-w-[140px] border-blue-300 bg-white hover:bg-blue-50 text-blue-700"
+                            className="min-w-[140px] border-blue-300 dark:border-blue-600 bg-white dark:bg-card hover:bg-blue-50 dark:hover:bg-blue-950/50 text-blue-700 dark:text-blue-300"
                           >
                             {showAnswer ? (
                               <>
@@ -470,8 +470,8 @@ export default function FlashcardsPage() {
                       </div>
                     ) : (
                       <div className="flex flex-col items-center justify-center h-64">
-                        <BookOpen className="h-12 w-12 text-gray-400 mb-4" />
-                        <p className="text-gray-500 text-lg">No cards available for review</p>
+                        <BookOpen className="h-12 w-12 text-muted-foreground mb-4" />
+                        <p className="text-muted-foreground text-lg">No cards available for review</p>
                       </div>
                     )}
                   </CardContent>
@@ -481,32 +481,32 @@ export default function FlashcardsPage() {
               {/* Card Info */}
               <div className="space-y-6">
                 <Card className="shadow-md">
-                  <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100">
-                    <CardTitle className="text-base flex items-center">
+                  <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
+                    <CardTitle className="text-base flex items-center text-foreground">
                       <Info className="mr-2 h-4 w-4" />
                       Card Info
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4 p-4">
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="text-center p-3 bg-blue-50 rounded-lg">
-                        <p className="text-xs font-medium text-blue-600 uppercase tracking-wide">Reviews</p>
-                        <p className="text-2xl font-bold text-blue-900">{currentCard?.reviewCount || 0}</p>
+                      <div className="text-center p-3 bg-blue-50 dark:bg-blue-950/50 rounded-lg">
+                        <p className="text-xs font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wide">Reviews</p>
+                        <p className="text-2xl font-bold text-blue-900 dark:text-blue-100">{currentCard?.reviewCount || 0}</p>
                       </div>
-                      <div className="text-center p-3 bg-green-50 rounded-lg">
-                        <p className="text-xs font-medium text-green-600 uppercase tracking-wide">Streak</p>
-                        <p className="text-2xl font-bold text-green-900">{currentCard?.consecutiveCorrect || 0}</p>
+                      <div className="text-center p-3 bg-green-50 dark:bg-green-950/50 rounded-lg">
+                        <p className="text-xs font-medium text-green-600 dark:text-green-400 uppercase tracking-wide">Streak</p>
+                        <p className="text-2xl font-bold text-green-900 dark:text-green-100">{currentCard?.consecutiveCorrect || 0}</p>
                       </div>
                     </div>
                     <div className="space-y-3">
-                      <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
-                        <span className="text-sm font-medium">Difficulty</span>
+                      <div className="flex justify-between items-center p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                        <span className="text-sm font-medium text-foreground">Difficulty</span>
                         <Badge variant="outline" className="capitalize">
                           {currentCard?.difficulty || 'new'}
                         </Badge>
                       </div>
-                      <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
-                        <span className="text-sm font-medium">Next Review</span>
+                      <div className="flex justify-between items-center p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                        <span className="text-sm font-medium text-foreground">Next Review</span>
                         <span className="text-xs text-muted-foreground">
                           {getNextReviewText(currentCard?.nextReview || 0)}
                         </span>
@@ -517,8 +517,8 @@ export default function FlashcardsPage() {
 
                 {/* Progress */}
                 <Card className="shadow-md">
-                  <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50">
-                    <CardTitle className="text-base flex items-center">
+                  <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/50 dark:to-pink-950/50">
+                    <CardTitle className="text-base flex items-center text-foreground">
                       <TrendingUp className="mr-2 h-4 w-4" />
                       Progress
                     </CardTitle>
@@ -526,8 +526,8 @@ export default function FlashcardsPage() {
                   <CardContent className="p-4">
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium">Session Progress</span>
-                        <span className="text-sm font-bold text-purple-600">
+                        <span className="text-sm font-medium text-foreground">Session Progress</span>
+                        <span className="text-sm font-bold text-purple-600 dark:text-purple-400">
                           {currentCardIndex + 1} / {sessionCards.length}
                         </span>
                       </div>
@@ -550,7 +550,7 @@ export default function FlashcardsPage() {
             <div className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center">
+                  <CardTitle className="flex items-center text-foreground">
                     <BarChart3 className="mr-2 h-5 w-5" />
                     Review Results
                   </CardTitle>
@@ -563,20 +563,20 @@ export default function FlashcardsPage() {
                     {sessionCards.map((card, index) => {
                       const userAnswer = userAnswers[card._id]
                       return (
-                        <div key={card._id} className="border rounded-lg p-4">
+                        <div key={card._id} className="border border-border rounded-lg p-4">
                           <div className="flex items-center justify-between mb-2">
-                            <h4 className="font-medium">Question {index + 1}</h4>
+                            <h4 className="font-medium text-foreground">Question {index + 1}</h4>
                             <Badge variant={userAnswer ? "default" : "destructive"}>
                               {userAnswer ? "Correct" : "Incorrect"}
                             </Badge>
                           </div>
                           <div className="space-y-2">
-                            <p className="text-sm font-medium">Question:</p>
-                            <p className="text-sm">{card.question}</p>
-                            <p className="text-sm font-medium">Your Answer:</p>
-                            <p className="text-sm">{userAnswer ? "Correct" : "Incorrect"}</p>
-                            <p className="text-sm font-medium">Correct Answer:</p>
-                            <p className="text-sm font-bold text-green-600">{card.answer}</p>
+                            <p className="text-sm font-medium text-foreground">Question:</p>
+                            <p className="text-sm text-foreground">{card.question}</p>
+                            <p className="text-sm font-medium text-foreground">Your Answer:</p>
+                            <p className="text-sm text-foreground">{userAnswer ? "Correct" : "Incorrect"}</p>
+                            <p className="text-sm font-medium text-foreground">Correct Answer:</p>
+                            <p className="text-sm font-bold text-green-600 dark:text-green-400">{card.answer}</p>
                           </div>
                         </div>
                       )
@@ -598,9 +598,9 @@ export default function FlashcardsPage() {
               <div className="text-center py-12">
                 {(hasCards || allFlashcards.length > 0) ? (
                   <div>
-                    <BookOpen className="h-16 w-16 text-blue-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">Ready to Review!</h3>
-                    <p className="text-gray-600 mb-6">
+                    <BookOpen className="h-16 w-16 text-blue-400 dark:text-blue-500 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-foreground mb-2">Ready to Review!</h3>
+                    <p className="text-muted-foreground mb-6">
                       {hasCards 
                         ? `You have ${dueFlashcards.length} flashcards due for review, and ${allFlashcards.length} total cards.`
                         : `You have ${allFlashcards.length} flashcards available for review.`
@@ -622,14 +622,14 @@ export default function FlashcardsPage() {
                   </div>
                 ) : (
                   <div>
-                    <BookOpen className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    <BookOpen className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-foreground mb-2">
                       {selectedSubject 
                         ? `No flashcards in ${selectedSubject}`
                         : "No flashcards due for review"
                       }
                     </h3>
-                    <p className="text-gray-600 mb-6">
+                    <p className="text-muted-foreground mb-6">
                       {allFlashcards.length === 0 
                         ? selectedSubject
                           ? `You don't have any flashcards in ${selectedSubject} yet. Create some from your notes!`
@@ -642,7 +642,7 @@ export default function FlashcardsPage() {
                     
                     {notesWithoutFlashcards.length > 0 && (
                       <div className="space-y-4">
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-muted-foreground">
                           {selectedSubject 
                             ? `Generate flashcards from your ${selectedSubject} notes:`
                             : "Generate flashcards from your notes:"
@@ -670,7 +670,7 @@ export default function FlashcardsPage() {
                           ))}
                         </div>
                         {selectedSubject && notesWithoutFlashcards.filter(note => note.subject === selectedSubject).length === 0 && (
-                          <p className="text-sm text-gray-500 text-center">
+                          <p className="text-sm text-muted-foreground text-center">
                             No {selectedSubject} notes found. Create some notes in this subject first!
                           </p>
                         )}
@@ -686,8 +686,8 @@ export default function FlashcardsPage() {
             <div className="mt-8">
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Plus className="mr-2 h-5 w-5 text-green-600" />
+                  <CardTitle className="flex items-center text-foreground">
+                    <Plus className="mr-2 h-5 w-5 text-green-600 dark:text-green-400" />
                     Generate More Flashcards
                   </CardTitle>
                   <CardDescription>
@@ -696,7 +696,7 @@ export default function FlashcardsPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-muted-foreground">
                       {selectedSubject 
                         ? `Available ${selectedSubject} notes:`
                         : "Available notes:"
@@ -715,7 +715,7 @@ export default function FlashcardsPage() {
                           size="sm"
                         >
                           {isGenerating ? (
-                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 dark:border-blue-400 mr-2"></div>
                           ) : (
                             <Plus className="h-4 w-4 mr-2" />
                           )}
@@ -724,7 +724,7 @@ export default function FlashcardsPage() {
                       ))}
                     </div>
                     {selectedSubject && notesWithoutFlashcards.filter(note => note.subject === selectedSubject).length === 0 && (
-                      <p className="text-sm text-gray-500 text-center">
+                      <p className="text-sm text-muted-foreground text-center">
                         No {selectedSubject} notes found. Create some notes in this subject first!
                       </p>
                     )}
@@ -736,8 +736,8 @@ export default function FlashcardsPage() {
             <div className="mt-8">
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <CheckCircle className="mr-2 h-5 w-5 text-green-600" />
+                  <CardTitle className="flex items-center text-foreground">
+                    <CheckCircle className="mr-2 h-5 w-5 text-green-600 dark:text-green-400" />
                     All Notes Have Flashcards
                   </CardTitle>
                   <CardDescription>
@@ -745,7 +745,7 @@ export default function FlashcardsPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-gray-600 text-center">
+                  <p className="text-sm text-muted-foreground text-center">
                     All your notes already have flashcards generated. You can review them above or create new notes to generate more flashcards.
                   </p>
                 </CardContent>
@@ -758,7 +758,7 @@ export default function FlashcardsPage() {
             <div className="mt-8">
               <Card>
                 <CardHeader>
-                  <CardTitle>Subject Performance</CardTitle>
+                  <CardTitle className="text-foreground">Subject Performance</CardTitle>
                   <CardDescription>
                     Flashcard statistics by subject
                   </CardDescription>
@@ -766,9 +766,9 @@ export default function FlashcardsPage() {
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {Object.entries(flashcardStats.subjectStats).map(([subject, stats]) => (
-                      <div key={subject} className="p-4 border rounded-lg">
-                        <h4 className="font-medium mb-2">{subject}</h4>
-                        <div className="space-y-1 text-sm">
+                      <div key={subject} className="p-4 border border-border rounded-lg">
+                        <h4 className="font-medium mb-2 text-foreground">{subject}</h4>
+                        <div className="space-y-1 text-sm text-muted-foreground">
                           <p>Total: {stats.total} cards</p>
                           <p>Due: {stats.due} cards</p>
                           <p>Reviews: {stats.reviews}</p>
