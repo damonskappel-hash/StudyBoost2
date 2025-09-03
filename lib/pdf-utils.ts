@@ -107,13 +107,37 @@ export async function downloadAsPDF(content: string, filename: string, title?: s
           const allElements = clonedElement.querySelectorAll('*')
           allElements.forEach(el => {
             const htmlEl = el as HTMLElement
-            if (htmlEl.style.color === '' || htmlEl.style.color.includes('oklch')) {
-              htmlEl.style.color = '#000000'
+            
+            // Get computed styles to catch CSS variables and oklch colors
+            const computedStyle = window.getComputedStyle(htmlEl)
+            const color = computedStyle.color
+            const backgroundColor = computedStyle.backgroundColor
+            
+            // Force explicit hex colors for text
+            if (color && (color.includes('oklch') || color.includes('var('))) {
+              htmlEl.style.setProperty('color', '#000000', 'important')
+            } else if (!htmlEl.style.color) {
+              htmlEl.style.setProperty('color', '#000000', 'important')
             }
-            if (htmlEl.style.backgroundColor === '' || htmlEl.style.backgroundColor.includes('oklch')) {
-              htmlEl.style.backgroundColor = '#ffffff'
+            
+            // Force explicit hex colors for backgrounds
+            if (backgroundColor && (backgroundColor.includes('oklch') || backgroundColor.includes('var('))) {
+              htmlEl.style.setProperty('background-color', '#ffffff', 'important')
+            } else if (!htmlEl.style.backgroundColor) {
+              htmlEl.style.setProperty('background-color', '#ffffff', 'important')
+            }
+            
+            // Also handle any other problematic color properties
+            const borderColor = computedStyle.borderColor
+            if (borderColor && (borderColor.includes('oklch') || borderColor.includes('var('))) {
+              htmlEl.style.setProperty('border-color', '#e5e7eb', 'important')
             }
           })
+          
+          // Also ensure the container itself has explicit colors
+          const container = clonedElement as HTMLElement
+          container.style.setProperty('color', '#000000', 'important')
+          container.style.setProperty('background-color', '#ffffff', 'important')
         }
       }
     })
