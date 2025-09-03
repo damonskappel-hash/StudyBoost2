@@ -126,18 +126,29 @@ export default function EnhancedNotePage() {
   }
 
   const handleDownload = async (content: string, filename: string, title?: string) => {
+    console.log('Download requested:', { filename, title, contentLength: content.length })
+    
     // Check if user has access to downloads
     const hasStudentPlan = has?.({ plan: 'student' })
     const hasProPlan = has?.({ plan: 'pro' })
+    
+    console.log('Subscription check:', { hasStudentPlan, hasProPlan })
     
     if (!hasStudentPlan && !hasProPlan) {
       toast.error('Downloads are only available for Student and Pro plans. Upgrade to download your notes!')
       return
     }
     
+    if (!content || content.trim() === '') {
+      toast.error('No content to download')
+      return
+    }
+    
     try {
       toast.info("Generating PDF...")
+      console.log('Starting PDF generation...')
       await downloadAsPDF(content, filename, title)
+      console.log('PDF generation completed successfully')
       toast.success("PDF downloaded successfully!")
     } catch (error) {
       console.error("PDF download error:", error)
@@ -764,7 +775,7 @@ export default function EnhancedNotePage() {
         </div>
       </div>
 
-      <style jsx global>{`
+      <style>{`
         .markdown-content {
           line-height: 1.6;
         }
