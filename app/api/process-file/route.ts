@@ -27,8 +27,14 @@ export async function POST(request: NextRequest) {
     } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
       extractedText = await processDocxFile(file)
     } else if (file.type === 'application/pdf') {
-      // PDF processing is temporarily disabled due to library issues
-      throw new Error('PDF processing is temporarily unavailable. Please copy text from your PDF and paste it manually, or convert your PDF to a Word document first.')
+      try {
+        console.log('Processing PDF file...')
+        extractedText = await processPdfFile(file)
+        console.log('PDF processing completed')
+      } catch (error: any) {
+        console.error('PDF processing error:', error)
+        throw new Error(`Failed to extract text from PDF: ${error.message}. Please ensure the PDF contains readable text and is not password-protected.`)
+      }
     } else if (file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
       // PowerPoint files (.pptx)
       throw new Error('PowerPoint files are not supported yet. Please convert to PDF or copy text manually.')
@@ -37,7 +43,7 @@ export async function POST(request: NextRequest) {
       throw new Error('Image OCR is temporarily unavailable. Please copy text from your image and paste it manually, or use Google Lens to extract text first.')
     } else {
       return NextResponse.json(
-        { success: false, error: 'Unsupported file type. Please use TXT or DOCX files.' },
+        { success: false, error: 'Unsupported file type. Please use TXT, DOCX, or PDF files.' },
         { status: 400 }
       )
     }
@@ -195,7 +201,90 @@ async function extractTextFromZipBuffer(arrayBuffer: ArrayBuffer): Promise<strin
     }
     
     throw new Error('No readable text content found in file')
-  } catch (error: any) {
+  } catch (error) {
     throw new Error('Manual text extraction failed')
+  }
+}
+
+// PDF processing function using pdfjs-dist
+async function processPdfFile(file: File): Promise<string> {
+  console.log('Starting PDF processing...')
+  
+  // Validate file size (PDF files should typically be reasonable size)
+  if (file.size > 100 * 1024 * 1024) { // 100MB limit for PDFs
+    throw new Error('File size too large. Please use a smaller PDF file (under 100MB).')
+  }
+  
+  try {
+    // Import pdfjs-dist dynamically to avoid SSR issues
+    const pdfjsLib = await import('pdfjs-dist')
+    
+    // Set worker source for PDF.js
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`
+    
+    console.log('PDF.js library loaded, processing file...')
+    
+    // Convert file to ArrayBuffer
+    const arrayBuffer = await file.arrayBuffer()
+    
+    // Load the PDF document
+    const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer })
+    const pdf = await loadingTask.promise
+    
+    console.log(`PDF loaded successfully. Pages: ${pdf.numPages}`)
+    
+    let extractedText = ''
+    
+    // Extract text from each page
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      try {
+        const page = await pdf.getPage(pageNum)
+        console.log(`Processing page ${pageNum}...`)
+        
+        // Get text content from the page
+        const textContent = await page.getTextContent()
+        
+        // Extract text items and join them
+        const pageText = textContent.items
+          .map((item: any) => item.str)
+          .join(' ')
+          .replace(/\s+/g, ' ')
+          .trim()
+        
+        if (pageText) {
+          extractedText += pageText + '\n\n'
+        }
+        
+        console.log(`Page ${pageNum} processed, text length: ${pageText.length}`)
+        
+      } catch (pageError: any) {
+        console.warn(`Error processing page ${pageNum}:`, pageError.message)
+        // Continue with other pages even if one fails
+      }
+    }
+    
+    // Clean up the PDF document
+    await pdf.destroy()
+    
+    if (!extractedText || extractedText.trim() === '') {
+      throw new Error('No text content could be extracted from the PDF. The file may contain only images or be password-protected.')
+    }
+    
+    console.log(`PDF processing completed. Total text length: ${extractedText.length}`)
+    return extractedText
+    
+  } catch (error: any) {
+    console.error('PDF processing failed:', error)
+    
+    // Provide helpful error messages for common issues
+    if (error.message.includes('password')) {
+      throw new Error('This PDF is password-protected. Please remove the password protection and try again.')
+    } else if (error.message.includes('Invalid PDF')) {
+      throw new Error('The file appears to be corrupted or not a valid PDF. Please try opening it in a PDF reader first.')
+    } else if (error.message.includes('No text content')) {
+      throw new Error('This PDF contains no readable text (possibly only images). Please use a PDF with text content or convert images to text first.')
+    } else {
+      throw new Error(`PDF processing failed: ${error.message}`)
+    }
   }
 }

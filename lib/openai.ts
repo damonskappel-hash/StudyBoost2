@@ -130,6 +130,7 @@ export function validateFile(file: File): { valid: boolean; error?: string } {
   const allowedTypes = [
     'text/plain',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/pdf',
     'image/jpeg',
     'image/jpg',
     'image/png',
@@ -154,7 +155,7 @@ export function validateFile(file: File): { valid: boolean; error?: string } {
   if (!allowedTypes.includes(file.type)) {
     return {
       valid: false,
-      error: "Unsupported file type. Please use TXT, DOCX, image files (JPG, PNG, etc.), or audio files (MP3, WAV, M4A)."
+      error: "Unsupported file type. Please use TXT, DOCX, PDF, image files (JPG, PNG, etc.), or audio files (MP3, WAV, M4A)."
     };
   }
 
