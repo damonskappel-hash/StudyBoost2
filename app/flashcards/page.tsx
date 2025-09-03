@@ -566,16 +566,11 @@ export default function FlashcardsPage() {
                         <div key={card._id} className="border border-border rounded-lg p-4">
                           <div className="flex items-center justify-between mb-2">
                             <h4 className="font-medium text-foreground">Question {index + 1}</h4>
-                            <Badge variant={userAnswer ? "default" : "destructive"}>
-                              {userAnswer ? "Correct" : "Incorrect"}
-                            </Badge>
                           </div>
                           <div className="space-y-2">
                             <p className="text-sm font-medium text-foreground">Question:</p>
                             <p className="text-sm text-foreground">{card.question}</p>
-                            <p className="text-sm font-medium text-foreground">Your Answer:</p>
-                            <p className="text-sm text-foreground">{userAnswer ? "Correct" : "Incorrect"}</p>
-                            <p className="text-sm font-medium text-foreground">Correct Answer:</p>
+                            <p className="text-sm font-medium text-foreground">Answer:</p>
                             <p className="text-sm font-bold text-green-600 dark:text-green-400">{card.answer}</p>
                           </div>
                         </div>
