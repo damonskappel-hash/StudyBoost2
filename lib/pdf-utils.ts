@@ -106,11 +106,12 @@ export async function downloadAsPDF(content: string, filename: string, title?: s
           // Ensure all text has explicit colors
           const allElements = clonedElement.querySelectorAll('*')
           allElements.forEach(el => {
-            if (el.style.color === '' || el.style.color.includes('oklch')) {
-              el.style.color = '#000000'
+            const htmlEl = el as HTMLElement
+            if (htmlEl.style.color === '' || htmlEl.style.color.includes('oklch')) {
+              htmlEl.style.color = '#000000'
             }
-            if (el.style.backgroundColor === '' || el.style.backgroundColor.includes('oklch')) {
-              el.style.backgroundColor = '#ffffff'
+            if (htmlEl.style.backgroundColor === '' || htmlEl.style.backgroundColor.includes('oklch')) {
+              htmlEl.style.backgroundColor = '#ffffff'
             }
           })
         }
