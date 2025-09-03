@@ -53,9 +53,6 @@ export async function downloadAsPDF(content: string, filename: string, title?: s
       .replace(/^- (.*$)/gim, '<li style="margin: 5px 0;">$1</li>')
       .replace(/^(\d+)\. (.*$)/gim, '<li style="margin: 5px 0;">$2</li>')
       
-      // Wrap lists in ul/ol tags
-      .replace(/(<li.*<\/li>)/gs, '<ul style="margin: 15px 0; padding-left: 20px;">$1</ul>')
-      
       // Code blocks
       .replace(/```([\s\S]*?)```/g, '<pre style="background-color: #f3f4f6; padding: 15px; border-radius: 6px; margin: 15px 0; font-family: monospace; font-size: 13px; overflow-x: auto;">$1</pre>')
       .replace(/`([^`]+)`/g, '<code style="background-color: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 13px;">$1</code>')
@@ -72,6 +69,11 @@ export async function downloadAsPDF(content: string, filename: string, title?: s
       // Line breaks
       .replace(/\n\n/g, '</p><p style="margin: 10px 0;">')
       .replace(/\n/g, '<br>')
+    
+    // Wrap lists in ul/ol tags (handle this separately to avoid regex compatibility issues)
+    htmlContent = htmlContent.replace(/<li[^>]*>.*?<\/li>/g, function(match) {
+      return '<ul style="margin: 15px 0; padding-left: 20px;">' + match + '</ul>'
+    })
     
     // Wrap in paragraph tags
     htmlContent = '<p style="margin: 10px 0;">' + htmlContent + '</p>'
