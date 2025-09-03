@@ -87,7 +87,7 @@ export async function downloadAsPDF(content: string, filename: string, title?: s
     // Wait a bit for rendering
     await new Promise(resolve => setTimeout(resolve, 100))
     
-    // Convert to canvas with better quality
+    // Convert to canvas with better quality and explicit styling to avoid oklch issues
     const canvas = await html2canvas(tempDiv, {
       scale: 2,
       useCORS: true,
@@ -98,7 +98,23 @@ export async function downloadAsPDF(content: string, filename: string, title?: s
       width: 800,
       height: tempDiv.scrollHeight,
       scrollX: 0,
-      scrollY: 0
+      scrollY: 0,
+      // Force explicit styling to avoid CSS variable issues
+      onclone: (clonedDoc) => {
+        const clonedElement = clonedDoc.querySelector('.markdown-content')
+        if (clonedElement) {
+          // Ensure all text has explicit colors
+          const allElements = clonedElement.querySelectorAll('*')
+          allElements.forEach(el => {
+            if (el.style.color === '' || el.style.color.includes('oklch')) {
+              el.style.color = '#000000'
+            }
+            if (el.style.backgroundColor === '' || el.style.backgroundColor.includes('oklch')) {
+              el.style.backgroundColor = '#ffffff'
+            }
+          })
+        }
+      }
     })
     
     // Remove temporary div
