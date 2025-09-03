@@ -116,53 +116,40 @@ export async function downloadAsPDF(content: string, filename: string, title?: s
         const clonedElement = clonedDoc.querySelector('.markdown-content')
         if (clonedElement) {
           console.log('Found cloned element, processing colors...')
-          // Ensure all text has explicit colors
+          
+          // Instead of modifying existing elements, let's recreate them with clean styling
+          const cleanElement = document.createElement('div')
+          cleanElement.className = 'markdown-content-clean'
+          cleanElement.style.fontSize = '14px'
+          cleanElement.style.lineHeight = '1.6'
+          cleanElement.style.color = '#000000'
+          cleanElement.style.backgroundColor = '#ffffff'
+          cleanElement.style.fontFamily = 'Arial, sans-serif'
+          
+          // Copy the content but with explicit styling
           const allElements = clonedElement.querySelectorAll('*')
-          console.log('Found', allElements.length, 'elements to process')
-          allElements.forEach((el, index) => {
-            const htmlEl = el as HTMLElement
-            
-            // Get computed styles to catch CSS variables and oklch colors
-            const computedStyle = window.getComputedStyle(htmlEl)
-            const color = computedStyle.color
-            const backgroundColor = computedStyle.backgroundColor
-            
-            console.log(`Element ${index}:`, {
-              tagName: htmlEl.tagName,
-              color: color,
-              backgroundColor: backgroundColor,
-              hasOklch: color?.includes('oklch') || backgroundColor?.includes('oklch')
+          console.log('Found', allElements.length, 'elements to recreate')
+          
+          // Create a completely clean version of the content
+          let cleanHtml = htmlContent
+          
+          // Ensure all elements have explicit colors by recreating the HTML with forced styling
+          cleanHtml = cleanHtml
+            .replace(/style="([^"]*)"/g, (match, styles) => {
+              // Remove any existing color/background-color and add our explicit ones
+              const cleanStyles = styles
+                .replace(/color:\s*[^;]+;?/g, '')
+                .replace(/background-color:\s*[^;]+;?/g, '')
+                .replace(/background:\s*[^;]+;?/g, '')
+              return `style="${cleanStyles} color: #000000 !important; background-color: #ffffff !important;"`
             })
-            
-            // Force explicit hex colors for text
-            if (color && (color.includes('oklch') || color.includes('var('))) {
-              console.log(`Replacing oklch color with hex: ${color} -> #000000`)
-              htmlEl.style.setProperty('color', '#000000', 'important')
-            } else if (!htmlEl.style.color) {
-              htmlEl.style.setProperty('color', '#000000', 'important')
-            }
-            
-            // Force explicit hex colors for backgrounds
-            if (backgroundColor && (backgroundColor.includes('oklch') || backgroundColor.includes('var('))) {
-              console.log(`Replacing oklch background with hex: ${backgroundColor} -> #ffffff`)
-              htmlEl.style.setProperty('background-color', '#ffffff', 'important')
-            } else if (!htmlEl.style.backgroundColor) {
-              htmlEl.style.setProperty('background-color', '#ffffff', 'important')
-            }
-            
-            // Also handle any other problematic color properties
-            const borderColor = computedStyle.borderColor
-            if (borderColor && (borderColor.includes('oklch') || borderColor.includes('var('))) {
-              htmlEl.style.setProperty('border-color', '#e5e7eb', 'important')
-            }
-          })
           
-          // Also ensure the container itself has explicit colors
-          const container = clonedElement as HTMLElement
-          container.style.setProperty('color', '#000000', 'important')
-          container.style.setProperty('background-color', '#ffffff', 'important')
+          cleanElement.innerHTML = cleanHtml
           
-          console.log('Color processing completed')
+          // Replace the original element with our clean version
+          clonedElement.parentNode?.replaceChild(cleanElement, clonedElement)
+          
+          console.log('Clean element created and replaced')
         } else {
           console.log('No cloned element found')
         }
