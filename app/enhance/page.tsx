@@ -322,11 +322,12 @@ export default function EnhancePage() {
                     </p>
                     <Input
                       type="file"
-                      accept=".txt,.docx,.jpg,.jpeg,.png,.gif,.bmp,.webp,.mp3,.wav,.m4a,.aac,.ogg,.webm"
+                      accept=".txt,.docx,.pdf,.jpg,.jpeg,.png,.gif,.bmp,.webp,.mp3,.wav,.m4a,.aac,.ogg,.webm,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,image/jpeg,image/png,image/gif,image/bmp,image/webp,audio/mpeg,audio/wav,audio/m4a,audio/aac,audio/ogg,audio/webm"
                       onChange={handleFileUpload}
                       className="hidden"
                       id="file-upload"
                       disabled={isFileProcessing}
+                      onFocus={() => console.log('File input focused, accept types:', '.txt,.docx,.pdf,.jpg,.jpeg,.png,.gif,.bmp,.webp,.mp3,.wav,.m4a,.aac,.ogg,.webm')}
                     />
                     <label htmlFor="file-upload">
                       <Button variant="outline" asChild disabled={isFileProcessing} className="h-9">
@@ -334,7 +335,7 @@ export default function EnhancePage() {
                       </Button>
                     </label>
                     <p className="text-xs text-muted-foreground mt-2">
-                      Supporting: TXT, DOCX, Images, Audio - max {has?.({ plan: 'pro' }) ? '100MB' : has?.({ plan: 'student' }) ? '50MB' : '10MB'}
+                      Supporting: TXT, DOCX, PDF, Images, Audio - max {has?.({ plan: 'pro' }) ? '100MB' : has?.({ plan: 'student' }) ? '50MB' : '10MB'}
                     </p>
                     
                     {isFileProcessing && (
@@ -345,6 +346,8 @@ export default function EnhancePage() {
                             ? 'Extracting text from image (this may take a moment)...'
                             : file?.type.startsWith('audio/')
                             ? 'Transcribing audio (this may take 2-10 minutes)...'
+                            : file?.type === 'application/pdf'
+                            ? 'Extracting text from PDF (this may take a moment)...'
                             : 'Processing file...'
                           }
                         </span>
