@@ -66,6 +66,13 @@ export default function EnhancePage() {
     const selectedFile = event.target.files?.[0]
     if (!selectedFile) return
 
+    console.log('File selected:', {
+      name: selectedFile.name,
+      type: selectedFile.type,
+      size: selectedFile.size,
+      lastModified: new Date(selectedFile.lastModified).toISOString()
+    })
+
     // Check file size limits based on subscription
     const hasStudentPlan = has?.({ plan: 'student' })
     const hasProPlan = has?.({ plan: 'pro' })
@@ -91,12 +98,32 @@ export default function EnhancePage() {
     setTitle(selectedFile.name.replace(/\.[^/.]+$/, "")) // Remove file extension
 
     try {
+      console.log('Starting file text extraction...')
       const extractedText = await extractTextFromFile(selectedFile)
+      console.log('Text extraction completed, length:', extractedText.length)
       setContent(extractedText)
       toast.success("File processed successfully!")
     } catch (error: any) {
-      toast.error(error.message || "Failed to extract text from file")
-      console.error('File upload error:', error)
+      console.error('File upload error details:', {
+        error: error.message,
+        stack: error.stack,
+        fileName: selectedFile.name,
+        fileType: selectedFile.type,
+        fileSize: selectedFile.size
+      })
+      
+      // Provide more specific error messages
+      let errorMessage = error.message || "Failed to extract text from file"
+      
+      if (error.message?.includes('DOCX')) {
+        errorMessage = "Failed to process DOCX file. This might be due to file corruption or format issues. Please try opening and resaving the file in Microsoft Word or Google Docs."
+      } else if (error.message?.includes('500')) {
+        errorMessage = "Server error occurred while processing the file. Please try again or contact support if the issue persists."
+      } else if (error.message?.includes('Failed to fetch')) {
+        errorMessage = "Network error occurred. Please check your internet connection and try again."
+      }
+      
+      toast.error(errorMessage)
       setFile(null)
     } finally {
       setIsFileProcessing(false)
