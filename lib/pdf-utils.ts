@@ -19,9 +19,9 @@ export async function downloadAsPDF(content: string, filename: string, title?: s
     const addWrappedText = (text: string, fontSize: number = 12, isBold: boolean = false) => {
       pdf.setFontSize(fontSize)
       if (isBold) {
-        pdf.setFont(undefined, 'bold')
+        pdf.setFont('helvetica', 'bold')
       } else {
-        pdf.setFont(undefined, 'normal')
+        pdf.setFont('helvetica', 'normal')
       }
       
       // Split text into lines that fit within the page width
@@ -77,7 +77,7 @@ export async function downloadAsPDF(content: string, filename: string, title?: s
       else if (trimmedLine.startsWith('> ')) {
         const quoteText = trimmedLine.substring(2)
         pdf.setFontSize(12)
-        pdf.setFont(undefined, 'italic')
+        pdf.setFont('helvetica', 'italic')
         pdf.setTextColor(100, 100, 100)
         
         const lines = pdf.splitTextToSize(quoteText, textWidth - 10)
@@ -119,14 +119,14 @@ export async function downloadAsPDF(content: string, filename: string, title?: s
         // Handle code inline
         if (trimmedLine.includes('`')) {
           processedLine = trimmedLine.replace(/`([^`]+)`/g, '$1')
-          pdf.setFont(undefined, 'monospace')
+          pdf.setFont('courier', 'normal')
         }
         
         addWrappedText(processedLine, 12, isBold)
         
         // Reset font if we changed it
         if (trimmedLine.includes('`')) {
-          pdf.setFont(undefined, 'normal')
+          pdf.setFont('helvetica', 'normal')
         }
       }
     }
