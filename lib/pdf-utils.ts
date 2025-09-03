@@ -7,159 +7,207 @@ export async function downloadAsPDF(content: string, filename: string, title?: s
   try {
     console.log('PDF generation started, content length:', content.length)
     
-    // Create a completely isolated div with explicit styling to avoid any CSS variable issues
-    const tempDiv = document.createElement('div')
-    tempDiv.style.position = 'absolute'
-    tempDiv.style.left = '-9999px'
-    tempDiv.style.top = '0'
-    tempDiv.style.width = '800px'
-    tempDiv.style.padding = '40px'
-    tempDiv.style.backgroundColor = '#ffffff'
-    tempDiv.style.fontFamily = 'Arial, sans-serif'
-    tempDiv.style.fontSize = '14px'
-    tempDiv.style.lineHeight = '1.6'
-    tempDiv.style.color = '#000000'
-    tempDiv.style.border = 'none'
-    tempDiv.style.outline = 'none'
+    // Create a completely isolated iframe to avoid any CSS inheritance issues
+    const iframe = document.createElement('iframe')
+    iframe.style.position = 'absolute'
+    iframe.style.left = '-9999px'
+    iframe.style.top = '0'
+    iframe.style.width = '800px'
+    iframe.style.height = '1200px'
+    iframe.style.border = 'none'
+    iframe.style.background = '#ffffff'
     
-    // Add title if provided
-    if (title) {
-      const titleElement = document.createElement('h1')
-      titleElement.textContent = title
-      titleElement.style.fontSize = '28px'
-      titleElement.style.fontWeight = 'bold'
-      titleElement.style.marginBottom = '30px'
-      titleElement.style.color = '#1f2937'
-      titleElement.style.borderBottom = '2px solid #e5e7eb'
-      titleElement.style.paddingBottom = '15px'
-      titleElement.style.backgroundColor = '#ffffff'
-      tempDiv.appendChild(titleElement)
-    }
+    // Add iframe to document
+    document.body.appendChild(iframe)
     
-    // Convert markdown content to HTML and add to content element
-    const contentElement = document.createElement('div')
-    contentElement.className = 'markdown-content'
-    contentElement.style.fontSize = '14px'
-    contentElement.style.lineHeight = '1.6'
-    contentElement.style.color = '#000000'
-    contentElement.style.backgroundColor = '#ffffff'
-    
-    // Basic markdown to HTML conversion
-    let htmlContent = content
-      // Headers
-      .replace(/^### (.*$)/gim, '<h3 style="font-size: 18px; font-weight: 600; margin: 20px 0 10px 0; color: #374151; background-color: #ffffff;">$1</h3>')
-      .replace(/^## (.*$)/gim, '<h2 style="font-size: 20px; font-weight: 600; margin: 25px 0 15px 0; color: #1f2937; background-color: #ffffff;">$1</h2>')
-      .replace(/^# (.*$)/gim, '<h1 style="font-size: 22px; font-weight: 600; margin: 30px 0 20px 0; color: #111827; background-color: #ffffff;">$1</h1>')
-      
-      // Bold and italic
-      .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight: 600; color: #000000; background-color: #ffffff;">$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em style="font-style: italic; color: #000000; background-color: #ffffff;">$1</em>')
-      
-      // Lists
-      .replace(/^\* (.*$)/gim, '<li style="margin: 5px 0; color: #000000; background-color: #ffffff;">$1</li>')
-      .replace(/^- (.*$)/gim, '<li style="margin: 5px 0; color: #000000; background-color: #ffffff;">$1</li>')
-      .replace(/^(\d+)\. (.*$)/gim, '<li style="margin: 5px 0; color: #000000; background-color: #ffffff;">$2</li>')
-      
-      // Code blocks
-      .replace(/```([\s\S]*?)```/g, '<pre style="background-color: #f3f4f6; padding: 15px; border-radius: 6px; margin: 15px 0; font-family: monospace; font-size: 13px; overflow-x: auto; color: #000000;">$1</pre>')
-      .replace(/`([^`]+)`/g, '<code style="background-color: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 13px; color: #000000;">$1</code>')
-      
-      // Blockquotes
-      .replace(/^> (.*$)/gim, '<blockquote style="border-left: 4px solid #e5e7eb; padding-left: 15px; margin: 15px 0; font-style: italic; color: #6b7280; background-color: #ffffff;">$1</blockquote>')
-      
-      // Horizontal rules
-      .replace(/^---$/gim, '<hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0; background-color: #ffffff;">')
-      
-      // Links
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" style="color: #3b82f6; text-decoration: underline; background-color: #ffffff;">$1</a>')
-      
-      // Line breaks
-      .replace(/\n\n/g, '</p><p style="margin: 10px 0; color: #000000; background-color: #ffffff;">')
-      .replace(/\n/g, '<br>')
-    
-    // Wrap lists in ul/ol tags (handle this separately to avoid regex compatibility issues)
-    htmlContent = htmlContent.replace(/<li[^>]*>.*?<\/li>/g, function(match) {
-      return '<ul style="margin: 15px 0; padding-left: 20px; color: #000000; background-color: #ffffff;">' + match + '</ul>'
+    // Wait for iframe to load
+    await new Promise(resolve => {
+      iframe.onload = resolve
+      iframe.src = 'about:blank'
     })
     
-    // Wrap in paragraph tags
-    htmlContent = '<p style="margin: 10px 0; color: #000000; background-color: #ffffff;">' + htmlContent + '</p>'
+    console.log('Iframe created and loaded')
     
-    contentElement.innerHTML = htmlContent
-    tempDiv.appendChild(contentElement)
+    // Get the iframe document
+    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document
+    if (!iframeDoc) {
+      throw new Error('Could not access iframe document')
+    }
     
-    // Add to document
-    document.body.appendChild(tempDiv)
+    // Create a completely clean HTML document in the iframe
+    const cleanHtml = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              font-size: 14px;
+              line-height: 1.6;
+              color: #000000 !important;
+              background-color: #ffffff !important;
+              margin: 0;
+              padding: 40px;
+              width: 720px;
+            }
+            h1 {
+              font-size: 28px;
+              font-weight: bold;
+              margin-bottom: 30px;
+              color: #1f2937 !important;
+              background-color: #ffffff !important;
+              border-bottom: 2px solid #e5e7eb;
+              padding-bottom: 15px;
+            }
+            h2 {
+              font-size: 20px;
+              font-weight: 600;
+              margin: 25px 0 15px 0;
+              color: #1f2937 !important;
+              background-color: #ffffff !important;
+            }
+            h3 {
+              font-size: 18px;
+              font-weight: 600;
+              margin: 20px 0 10px 0;
+              color: #374151 !important;
+              background-color: #ffffff !important;
+            }
+            p {
+              margin: 10px 0;
+              color: #000000 !important;
+              background-color: #ffffff !important;
+            }
+            strong {
+              font-weight: 600;
+              color: #000000 !important;
+              background-color: #ffffff !important;
+            }
+            em {
+              font-style: italic;
+              color: #000000 !important;
+              background-color: #ffffff !important;
+            }
+            ul, ol {
+              margin: 15px 0;
+              padding-left: 20px;
+              color: #000000 !important;
+              background-color: #ffffff !important;
+            }
+            li {
+              margin: 5px 0;
+              color: #000000 !important;
+              background-color: #ffffff !important;
+            }
+            pre {
+              background-color: #f3f4f6;
+              padding: 15px;
+              border-radius: 6px;
+              margin: 15px 0;
+              font-family: monospace;
+              font-size: 13px;
+              overflow-x: auto;
+              color: #000000 !important;
+            }
+            code {
+              background-color: #f3f4f6;
+              padding: 2px 6px;
+              border-radius: 4px;
+              font-family: monospace;
+              font-size: 13px;
+              color: #000000 !important;
+            }
+            blockquote {
+              border-left: 4px solid #e5e7eb;
+              padding-left: 15px;
+              margin: 15px 0;
+              font-style: italic;
+              color: #6b7280 !important;
+              background-color: #ffffff !important;
+            }
+            hr {
+              border: none;
+              border-top: 1px solid #e5e7eb;
+              margin: 20px 0;
+              background-color: #ffffff !important;
+            }
+            a {
+              color: #3b82f6;
+              text-decoration: underline;
+              background-color: #ffffff !important;
+            }
+          </style>
+        </head>
+        <body>
+          ${title ? `<h1>${title}</h1>` : ''}
+          <div class="content">
+            ${content
+              // Headers
+              .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+              .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+              .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+              
+              // Bold and italic
+              .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+              .replace(/\*(.*?)\*/g, '<em>$1</em>')
+              
+              // Lists
+              .replace(/^\* (.*$)/gim, '<li>$1</li>')
+              .replace(/^- (.*$)/gim, '<li>$1</li>')
+              .replace(/^(\d+)\. (.*$)/gim, '<li>$2</li>')
+              
+              // Code blocks
+              .replace(/```([\s\S]*?)```/g, '<pre>$1</pre>')
+              .replace(/`([^`]+)`/g, '<code>$1</code>')
+              
+              // Blockquotes
+              .replace(/^> (.*$)/gim, '<blockquote>$1</blockquote>')
+              
+              // Horizontal rules
+              .replace(/^---$/gim, '<hr>')
+              
+              // Links
+              .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+              
+              // Line breaks
+              .replace(/\n\n/g, '</p><p>')
+              .replace(/\n/g, '<br>')
+            }
+          </div>
+        </body>
+      </html>
+    `
     
-    console.log('Temporary div created and added to document')
+    // Set the iframe content
+    iframeDoc.open()
+    iframeDoc.write(cleanHtml)
+    iframeDoc.close()
     
-    // Wait a bit for rendering
-    await new Promise(resolve => setTimeout(resolve, 100))
+    console.log('Clean HTML written to iframe')
     
-    console.log('Starting html2canvas conversion...')
+    // Wait for content to render
+    await new Promise(resolve => setTimeout(resolve, 200))
     
-    // Convert to canvas with explicit styling and debugging
-    const canvas = await html2canvas(tempDiv, {
+    console.log('Starting html2canvas conversion from iframe...')
+    
+    // Convert iframe content to canvas
+    const canvas = await html2canvas(iframe, {
       scale: 2,
       useCORS: true,
       allowTaint: true,
       backgroundColor: '#ffffff',
-      logging: true, // Enable logging to see what's happening
-      removeContainer: true,
+      logging: true,
       width: 800,
-      height: tempDiv.scrollHeight,
+      height: iframe.scrollHeight || 1200,
       scrollX: 0,
-      scrollY: 0,
-      // Force explicit styling to avoid CSS variable issues
-      onclone: (clonedDoc) => {
-        console.log('onclone callback triggered')
-        const clonedElement = clonedDoc.querySelector('.markdown-content')
-        if (clonedElement) {
-          console.log('Found cloned element, processing colors...')
-          
-          // Instead of modifying existing elements, let's recreate them with clean styling
-          const cleanElement = document.createElement('div')
-          cleanElement.className = 'markdown-content-clean'
-          cleanElement.style.fontSize = '14px'
-          cleanElement.style.lineHeight = '1.6'
-          cleanElement.style.color = '#000000'
-          cleanElement.style.backgroundColor = '#ffffff'
-          cleanElement.style.fontFamily = 'Arial, sans-serif'
-          
-          // Copy the content but with explicit styling
-          const allElements = clonedElement.querySelectorAll('*')
-          console.log('Found', allElements.length, 'elements to recreate')
-          
-          // Create a completely clean version of the content
-          let cleanHtml = htmlContent
-          
-          // Ensure all elements have explicit colors by recreating the HTML with forced styling
-          cleanHtml = cleanHtml
-            .replace(/style="([^"]*)"/g, (match, styles) => {
-              // Remove any existing color/background-color and add our explicit ones
-              const cleanStyles = styles
-                .replace(/color:\s*[^;]+;?/g, '')
-                .replace(/background-color:\s*[^;]+;?/g, '')
-                .replace(/background:\s*[^;]+;?/g, '')
-              return `style="${cleanStyles} color: #000000 !important; background-color: #ffffff !important;"`
-            })
-          
-          cleanElement.innerHTML = cleanHtml
-          
-          // Replace the original element with our clean version
-          clonedElement.parentNode?.replaceChild(cleanElement, clonedElement)
-          
-          console.log('Clean element created and replaced')
-        } else {
-          console.log('No cloned element found')
-        }
-      }
+      scrollY: 0
     })
     
     console.log('html2canvas conversion completed, canvas size:', canvas.width, 'x', canvas.height)
     
-    // Remove temporary div
-    document.body.removeChild(tempDiv)
+    // Remove iframe
+    document.body.removeChild(iframe)
     
     // Create PDF with better dimensions
     const imgData = canvas.toDataURL('image/png', 1.0)
