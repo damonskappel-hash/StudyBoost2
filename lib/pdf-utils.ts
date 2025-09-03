@@ -5,7 +5,9 @@ import html2canvas from 'html2canvas'
 // Download content as PDF
 export async function downloadAsPDF(content: string, filename: string, title?: string): Promise<void> {
   try {
-    // Create a temporary div to render the content
+    console.log('PDF generation started, content length:', content.length)
+    
+    // Create a completely isolated div with explicit styling to avoid any CSS variable issues
     const tempDiv = document.createElement('div')
     tempDiv.style.position = 'absolute'
     tempDiv.style.left = '-9999px'
@@ -17,6 +19,8 @@ export async function downloadAsPDF(content: string, filename: string, title?: s
     tempDiv.style.fontSize = '14px'
     tempDiv.style.lineHeight = '1.6'
     tempDiv.style.color = '#000000'
+    tempDiv.style.border = 'none'
+    tempDiv.style.outline = 'none'
     
     // Add title if provided
     if (title) {
@@ -28,6 +32,7 @@ export async function downloadAsPDF(content: string, filename: string, title?: s
       titleElement.style.color = '#1f2937'
       titleElement.style.borderBottom = '2px solid #e5e7eb'
       titleElement.style.paddingBottom = '15px'
+      titleElement.style.backgroundColor = '#ffffff'
       tempDiv.appendChild(titleElement)
     }
     
@@ -36,47 +41,49 @@ export async function downloadAsPDF(content: string, filename: string, title?: s
     contentElement.className = 'markdown-content'
     contentElement.style.fontSize = '14px'
     contentElement.style.lineHeight = '1.6'
+    contentElement.style.color = '#000000'
+    contentElement.style.backgroundColor = '#ffffff'
     
     // Basic markdown to HTML conversion
     let htmlContent = content
       // Headers
-      .replace(/^### (.*$)/gim, '<h3 style="font-size: 18px; font-weight: 600; margin: 20px 0 10px 0; color: #374151;">$1</h3>')
-      .replace(/^## (.*$)/gim, '<h2 style="font-size: 20px; font-weight: 600; margin: 25px 0 15px 0; color: #1f2937;">$1</h2>')
-      .replace(/^# (.*$)/gim, '<h1 style="font-size: 22px; font-weight: 600; margin: 30px 0 20px 0; color: #111827;">$1</h1>')
+      .replace(/^### (.*$)/gim, '<h3 style="font-size: 18px; font-weight: 600; margin: 20px 0 10px 0; color: #374151; background-color: #ffffff;">$1</h3>')
+      .replace(/^## (.*$)/gim, '<h2 style="font-size: 20px; font-weight: 600; margin: 25px 0 15px 0; color: #1f2937; background-color: #ffffff;">$1</h2>')
+      .replace(/^# (.*$)/gim, '<h1 style="font-size: 22px; font-weight: 600; margin: 30px 0 20px 0; color: #111827; background-color: #ffffff;">$1</h1>')
       
       // Bold and italic
-      .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight: 600;">$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em style="font-style: italic;">$1</em>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight: 600; color: #000000; background-color: #ffffff;">$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em style="font-style: italic; color: #000000; background-color: #ffffff;">$1</em>')
       
       // Lists
-      .replace(/^\* (.*$)/gim, '<li style="margin: 5px 0;">$1</li>')
-      .replace(/^- (.*$)/gim, '<li style="margin: 5px 0;">$1</li>')
-      .replace(/^(\d+)\. (.*$)/gim, '<li style="margin: 5px 0;">$2</li>')
+      .replace(/^\* (.*$)/gim, '<li style="margin: 5px 0; color: #000000; background-color: #ffffff;">$1</li>')
+      .replace(/^- (.*$)/gim, '<li style="margin: 5px 0; color: #000000; background-color: #ffffff;">$1</li>')
+      .replace(/^(\d+)\. (.*$)/gim, '<li style="margin: 5px 0; color: #000000; background-color: #ffffff;">$2</li>')
       
       // Code blocks
-      .replace(/```([\s\S]*?)```/g, '<pre style="background-color: #f3f4f6; padding: 15px; border-radius: 6px; margin: 15px 0; font-family: monospace; font-size: 13px; overflow-x: auto;">$1</pre>')
-      .replace(/`([^`]+)`/g, '<code style="background-color: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 13px;">$1</code>')
+      .replace(/```([\s\S]*?)```/g, '<pre style="background-color: #f3f4f6; padding: 15px; border-radius: 6px; margin: 15px 0; font-family: monospace; font-size: 13px; overflow-x: auto; color: #000000;">$1</pre>')
+      .replace(/`([^`]+)`/g, '<code style="background-color: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 13px; color: #000000;">$1</code>')
       
       // Blockquotes
-      .replace(/^> (.*$)/gim, '<blockquote style="border-left: 4px solid #e5e7eb; padding-left: 15px; margin: 15px 0; font-style: italic; color: #6b7280;">$1</blockquote>')
+      .replace(/^> (.*$)/gim, '<blockquote style="border-left: 4px solid #e5e7eb; padding-left: 15px; margin: 15px 0; font-style: italic; color: #6b7280; background-color: #ffffff;">$1</blockquote>')
       
       // Horizontal rules
-      .replace(/^---$/gim, '<hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0;">')
+      .replace(/^---$/gim, '<hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0; background-color: #ffffff;">')
       
       // Links
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" style="color: #3b82f6; text-decoration: underline;">$1</a>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" style="color: #3b82f6; text-decoration: underline; background-color: #ffffff;">$1</a>')
       
       // Line breaks
-      .replace(/\n\n/g, '</p><p style="margin: 10px 0;">')
+      .replace(/\n\n/g, '</p><p style="margin: 10px 0; color: #000000; background-color: #ffffff;">')
       .replace(/\n/g, '<br>')
     
     // Wrap lists in ul/ol tags (handle this separately to avoid regex compatibility issues)
     htmlContent = htmlContent.replace(/<li[^>]*>.*?<\/li>/g, function(match) {
-      return '<ul style="margin: 15px 0; padding-left: 20px;">' + match + '</ul>'
+      return '<ul style="margin: 15px 0; padding-left: 20px; color: #000000; background-color: #ffffff;">' + match + '</ul>'
     })
     
     // Wrap in paragraph tags
-    htmlContent = '<p style="margin: 10px 0;">' + htmlContent + '</p>'
+    htmlContent = '<p style="margin: 10px 0; color: #000000; background-color: #ffffff;">' + htmlContent + '</p>'
     
     contentElement.innerHTML = htmlContent
     tempDiv.appendChild(contentElement)
@@ -84,16 +91,20 @@ export async function downloadAsPDF(content: string, filename: string, title?: s
     // Add to document
     document.body.appendChild(tempDiv)
     
+    console.log('Temporary div created and added to document')
+    
     // Wait a bit for rendering
     await new Promise(resolve => setTimeout(resolve, 100))
     
-    // Convert to canvas with better quality and explicit styling to avoid oklch issues
+    console.log('Starting html2canvas conversion...')
+    
+    // Convert to canvas with explicit styling and debugging
     const canvas = await html2canvas(tempDiv, {
       scale: 2,
       useCORS: true,
       allowTaint: true,
       backgroundColor: '#ffffff',
-      logging: false,
+      logging: true, // Enable logging to see what's happening
       removeContainer: true,
       width: 800,
       height: tempDiv.scrollHeight,
@@ -101,11 +112,14 @@ export async function downloadAsPDF(content: string, filename: string, title?: s
       scrollY: 0,
       // Force explicit styling to avoid CSS variable issues
       onclone: (clonedDoc) => {
+        console.log('onclone callback triggered')
         const clonedElement = clonedDoc.querySelector('.markdown-content')
         if (clonedElement) {
+          console.log('Found cloned element, processing colors...')
           // Ensure all text has explicit colors
           const allElements = clonedElement.querySelectorAll('*')
-          allElements.forEach(el => {
+          console.log('Found', allElements.length, 'elements to process')
+          allElements.forEach((el, index) => {
             const htmlEl = el as HTMLElement
             
             // Get computed styles to catch CSS variables and oklch colors
@@ -113,8 +127,16 @@ export async function downloadAsPDF(content: string, filename: string, title?: s
             const color = computedStyle.color
             const backgroundColor = computedStyle.backgroundColor
             
+            console.log(`Element ${index}:`, {
+              tagName: htmlEl.tagName,
+              color: color,
+              backgroundColor: backgroundColor,
+              hasOklch: color?.includes('oklch') || backgroundColor?.includes('oklch')
+            })
+            
             // Force explicit hex colors for text
             if (color && (color.includes('oklch') || color.includes('var('))) {
+              console.log(`Replacing oklch color with hex: ${color} -> #000000`)
               htmlEl.style.setProperty('color', '#000000', 'important')
             } else if (!htmlEl.style.color) {
               htmlEl.style.setProperty('color', '#000000', 'important')
@@ -122,6 +144,7 @@ export async function downloadAsPDF(content: string, filename: string, title?: s
             
             // Force explicit hex colors for backgrounds
             if (backgroundColor && (backgroundColor.includes('oklch') || backgroundColor.includes('var('))) {
+              console.log(`Replacing oklch background with hex: ${backgroundColor} -> #ffffff`)
               htmlEl.style.setProperty('background-color', '#ffffff', 'important')
             } else if (!htmlEl.style.backgroundColor) {
               htmlEl.style.setProperty('background-color', '#ffffff', 'important')
@@ -138,9 +161,15 @@ export async function downloadAsPDF(content: string, filename: string, title?: s
           const container = clonedElement as HTMLElement
           container.style.setProperty('color', '#000000', 'important')
           container.style.setProperty('background-color', '#ffffff', 'important')
+          
+          console.log('Color processing completed')
+        } else {
+          console.log('No cloned element found')
         }
       }
     })
+    
+    console.log('html2canvas conversion completed, canvas size:', canvas.width, 'x', canvas.height)
     
     // Remove temporary div
     document.body.removeChild(tempDiv)
@@ -167,8 +196,12 @@ export async function downloadAsPDF(content: string, filename: string, title?: s
       heightLeft -= pageHeight
     }
     
+    console.log('PDF created successfully, saving...')
+    
     // Download PDF
     pdf.save(`${filename}.pdf`)
+    
+    console.log('PDF download completed')
     
   } catch (error) {
     console.error('PDF generation error:', error)
