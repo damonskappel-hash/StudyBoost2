@@ -260,7 +260,7 @@ export default function AnalyticsPage() {
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex justify-between text-sm">
-                    <span>Free Tier</span>
+                    <span className="capitalize">{usageLimit.tier} Plan</span>
                     <span>{(usageLimit.currentUsage || 0)}/{(usageLimit.limit || 0)}</span>
                   </div>
                   <Progress value={((usageLimit.currentUsage || 0) / (usageLimit.limit || 1)) * 100} />
@@ -270,6 +270,13 @@ export default function AnalyticsPage() {
                       "You've reached your monthly limit"
                     }
                   </p>
+                  {usageLimit.tier === 'free' && (
+                    <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 rounded-lg">
+                      <p className="text-sm text-blue-800 dark:text-blue-200">
+                        <strong>Upgrade your plan</strong> to get more AI enhancements per month!
+                      </p>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
