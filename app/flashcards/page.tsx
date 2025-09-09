@@ -46,6 +46,7 @@ export default function FlashcardsPage() {
   const [reviewMode, setReviewMode] = useState<'review' | 'results'>('review')
   const [userAnswers, setUserAnswers] = useState<Record<string, boolean>>({})
   const [sessionCards, setSessionCards] = useState<any[]>([])
+  const [incorrectCards, setIncorrectCards] = useState<any[]>([])
 
   // Get flashcard data - only query when user is authenticated
   const dueFlashcards = useQuery(api.flashcards.getDueFlashcards, 
@@ -131,9 +132,20 @@ export default function FlashcardsPage() {
         await logActivity({ kind: 'review', count: 1 })
       }
     } else {
-      // If incorrect, keep the same card but hide answer for retry
-      setShowAnswer(false)
-      toast.error('Incorrect. Try again!')
+      // If incorrect, add to incorrect cards and move to next
+      setIncorrectCards(prev => [...prev, currentCard])
+      
+      if (currentCardIndex < sessionCards.length - 1) {
+        setCurrentCardIndex(currentCardIndex + 1)
+        setShowAnswer(false)
+        toast.error('Incorrect. We\'ll review this again at the end!')
+      } else {
+        // End of session
+        endReviewSession()
+        toast.success('Review session complete!')
+        // Log activity: review session completion counts as 1
+        await logActivity({ kind: 'review', count: 1 })
+      }
     }
   }
 
@@ -190,6 +202,7 @@ export default function FlashcardsPage() {
     setSessionCards([...cardsToReview])
     setCurrentCardIndex(0)
     setUserAnswers({})
+    setIncorrectCards([])
     setReviewMode('review')
     setShowAnswer(false)
   }
@@ -213,11 +226,21 @@ export default function FlashcardsPage() {
       setReviewMode('review')
       setUserAnswers({})
       setSessionCards([])
+      setIncorrectCards([])
       setCurrentCardIndex(0)
     } catch (error) {
       console.error('Error saving review results:', error)
       toast.error('Failed to save results')
     }
+  }
+
+  const startIncorrectReview = () => {
+    setSessionCards([...incorrectCards])
+    setCurrentCardIndex(0)
+    setUserAnswers({})
+    setIncorrectCards([])
+    setReviewMode('review')
+    setShowAnswer(false)
   }
 
   const getNextReviewText = (timestamp: number) => {
@@ -328,7 +351,7 @@ export default function FlashcardsPage() {
                       <p className="text-sm text-blue-800 dark:text-blue-200">
                         1. Choose "Review Due Cards" or "Review All Cards" • 2. Read the question and think of your answer • 
                         3. Click "Flip to Answer" to reveal the correct answer • 4. Click "Correct" or "Incorrect" • 
-                        5. Complete all cards to see your results at the end!
+                        5. Complete all cards to see your results • 6. Review incorrect cards to improve!
                       </p>
                     </div>
                   </div>
@@ -567,17 +590,28 @@ export default function FlashcardsPage() {
                     Review Results
                   </CardTitle>
                   <CardDescription>
-                    Here are your answers and the correct answers
+                    {incorrectCards.length > 0 
+                      ? `You got ${incorrectCards.length} questions wrong. Review them to improve your understanding!`
+                      : "Great job! You got all questions correct."
+                    }
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {sessionCards.map((card, index) => {
                       const userAnswer = userAnswers[card._id]
+                      const isIncorrect = !userAnswer
                       return (
-                        <div key={card._id} className="border border-border rounded-lg p-4">
+                        <div key={card._id} className={`border rounded-lg p-4 ${
+                          isIncorrect 
+                            ? 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/50' 
+                            : 'border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950/50'
+                        }`}>
                           <div className="flex items-center justify-between mb-2">
                             <h4 className="font-medium text-foreground">Question {index + 1}</h4>
+                            <Badge variant={isIncorrect ? "destructive" : "default"} className="text-xs">
+                              {isIncorrect ? "Incorrect" : "Correct"}
+                            </Badge>
                           </div>
                           <div className="space-y-2">
                             <p className="text-sm font-medium text-foreground">Question:</p>
@@ -589,12 +623,18 @@ export default function FlashcardsPage() {
                       )
                     })}
                   </div>
-                  <div className="mt-6 flex space-x-4">
+                  <div className="mt-6 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
                     <Button onClick={saveReviewResults} className="flex-1">
                       Save Results & Continue
                     </Button>
-                    <Button onClick={() => startReviewSession(false)} variant="outline">
-                      Review Again
+                    {incorrectCards.length > 0 && (
+                      <Button onClick={startIncorrectReview} variant="outline" className="flex-1">
+                        <RotateCcw className="mr-2 h-4 w-4" />
+                        Review Incorrect Cards ({incorrectCards.length})
+                      </Button>
+                    )}
+                    <Button onClick={() => startReviewSession(false)} variant="outline" className="flex-1">
+                      Review All Again
                     </Button>
                   </div>
                 </CardContent>
