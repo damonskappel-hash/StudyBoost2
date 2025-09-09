@@ -25,7 +25,8 @@ import {
   Target,
   TrendingUp,
   Play,
-  Info
+  Info,
+  RotateCw
 } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
@@ -326,7 +327,7 @@ export default function FlashcardsPage() {
                       <h3 className="font-medium text-blue-900 dark:text-blue-100 mb-1">How to Study</h3>
                       <p className="text-sm text-blue-800 dark:text-blue-200">
                         1. Choose "Review Due Cards" or "Review All Cards" • 2. Read the question and think of your answer • 
-                        3. Click "Show Answer" to reveal the correct answer • 4. Click "Correct" or "Incorrect" • 
+                        3. Click "Flip to Answer" to reveal the correct answer • 4. Click "Correct" or "Incorrect" • 
                         5. Complete all cards to see your results at the end!
                       </p>
                     </div>
@@ -394,52 +395,63 @@ export default function FlashcardsPage() {
                   <CardContent className="p-6">
                     {currentCard ? (
                       <div className="space-y-8">
-                        {/* Question Section */}
-                        <div className="space-y-4">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                            <h3 className="text-lg font-semibold text-foreground">Question</h3>
-                          </div>
-                          <div className="bg-white dark:bg-card border border-blue-200 dark:border-blue-800 rounded-2xl p-6 shadow-sm">
-                            <div className="prose prose-lg max-w-none text-foreground">
-                              <ReactMarkdown>{currentCard.question}</ReactMarkdown>
+                        {/* Flip Card Container */}
+                        <div className="relative w-full h-96 perspective-1000">
+                          <div 
+                            className={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d ${
+                              showAnswer ? 'rotate-y-180' : ''
+                            }`}
+                          >
+                            {/* Front of Card (Question) */}
+                            <div className="absolute inset-0 w-full h-full backface-hidden">
+                              <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/50 dark:to-blue-900/50 border-2 border-blue-200 dark:border-blue-800 rounded-2xl p-8 shadow-lg h-full flex flex-col justify-center">
+                                <div className="text-center space-y-4">
+                                  <div className="flex items-center justify-center space-x-2 mb-6">
+                                    <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                                    <h3 className="text-lg font-semibold text-blue-800 dark:text-blue-200">Question</h3>
+                                  </div>
+                                  <div className="prose prose-lg max-w-none text-blue-900 dark:text-blue-100">
+                                    <ReactMarkdown>{currentCard.question}</ReactMarkdown>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Back of Card (Answer) */}
+                            <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180">
+                              <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/50 dark:to-green-900/50 border-2 border-green-200 dark:border-green-800 rounded-2xl p-8 shadow-lg h-full flex flex-col justify-center">
+                                <div className="text-center space-y-4">
+                                  <div className="flex items-center justify-center space-x-2 mb-6">
+                                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    <h3 className="text-lg font-semibold text-green-800 dark:text-green-200">Answer</h3>
+                                  </div>
+                                  <div className="prose prose-lg max-w-none text-green-900 dark:text-green-100">
+                                    <ReactMarkdown>{currentCard.answer}</ReactMarkdown>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
 
-                        {/* Answer Section */}
-                        {showAnswer && (
-                          <div className="space-y-4">
-                            <div className="flex items-center space-x-2">
-                              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                              <h3 className="text-lg font-semibold text-foreground">Answer</h3>
-                            </div>
-                            <div className="bg-green-50 dark:bg-green-950/50 border border-green-200 dark:border-green-800 rounded-2xl p-6 shadow-sm">
-                              <div className="prose prose-lg max-w-none text-foreground">
-                                <ReactMarkdown>{currentCard.answer}</ReactMarkdown>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-
                         {/* Action Buttons */}
                         <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 pt-8">
-                          {/* Show/Hide Answer Button */}
+                          {/* Flip Card Button */}
                           <Button
                             onClick={() => setShowAnswer(!showAnswer)}
                             variant="outline"
                             size="lg"
-                            className="min-w-[140px] border-blue-300 dark:border-blue-600 bg-white dark:bg-card hover:bg-blue-50 dark:hover:bg-blue-950/50 text-blue-700 dark:text-blue-300"
+                            className="min-w-[160px] border-blue-300 dark:border-blue-600 bg-white dark:bg-card hover:bg-blue-50 dark:hover:bg-blue-950/50 text-blue-700 dark:text-blue-300"
                           >
                             {showAnswer ? (
                               <>
-                                <EyeOff className="mr-2 h-4 w-4" />
-                                Hide Answer
+                                <RotateCcw className="mr-2 h-4 w-4" />
+                                Show Question
                               </>
                             ) : (
                               <>
-                                <Eye className="mr-2 h-4 w-4" />
-                                Show Answer
+                                <RotateCw className="mr-2 h-4 w-4" />
+                                Flip to Answer
                               </>
                             )}
                           </Button>
