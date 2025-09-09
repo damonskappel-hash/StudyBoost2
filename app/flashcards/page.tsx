@@ -26,7 +26,9 @@ import {
   TrendingUp,
   Play,
   Info,
-  RotateCw
+  RotateCw,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
@@ -48,6 +50,7 @@ export default function FlashcardsPage() {
   const [sessionCards, setSessionCards] = useState<any[]>([])
   const [incorrectCards, setIncorrectCards] = useState<any[]>([])
   const [cardAnimation, setCardAnimation] = useState<'none' | 'correct' | 'incorrect'>('none')
+  const [isHowToStudyExpanded, setIsHowToStudyExpanded] = useState(false)
 
   // Get flashcard data - only query when user is authenticated
   const dueFlashcards = useQuery(api.flashcards.getDueFlashcards, 
@@ -362,13 +365,29 @@ export default function FlashcardsPage() {
                     <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/50 rounded-lg flex items-center justify-center">
                       <BookOpen className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                     </div>
-                    <div>
-                      <h3 className="font-medium text-blue-900 dark:text-blue-100 mb-1">How to Study</h3>
-                      <p className="text-sm text-blue-800 dark:text-blue-200">
-                        1. Choose "Review Due Cards" or "Review All Cards" • 2. Read the question and think of your answer • 
-                        3. Click "Flip to Answer" to reveal the correct answer • 4. Click "Correct" or "Incorrect" • 
-                        5. Complete all cards to see your results • 6. Review incorrect cards to improve!
-                      </p>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-medium text-blue-900 dark:text-blue-100">How to Study</h3>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setIsHowToStudyExpanded(!isHowToStudyExpanded)}
+                          className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 p-1 h-auto"
+                        >
+                          {isHowToStudyExpanded ? (
+                            <ChevronUp className="h-4 w-4" />
+                          ) : (
+                            <ChevronDown className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
+                      {isHowToStudyExpanded && (
+                        <p className="text-sm text-blue-800 dark:text-blue-200 mt-2">
+                          1. Choose "Review Due Cards" or "Review All Cards" • 2. Read the question and think of your answer • 
+                          3. Click "Flip to Answer" to reveal the correct answer • 4. Click "Correct" or "Incorrect" • 
+                          5. Complete all cards to see your results • 6. Review incorrect cards to improve!
+                        </p>
+                      )}
                     </div>
                   </div>
                 </CardContent>
