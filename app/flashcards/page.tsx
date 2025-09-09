@@ -118,6 +118,17 @@ export default function FlashcardsPage() {
       [currentCard._id]: isCorrect
     }))
 
+    // Save the answer immediately to the database
+    try {
+      await reviewFlashcard({
+        flashcardId: currentCard._id,
+        isCorrect
+      })
+    } catch (error) {
+      console.error('Error saving flashcard review:', error)
+      toast.error('Failed to save answer')
+    }
+
     if (isCorrect) {
       // Move to next card if correct
       if (currentCardIndex < sessionCards.length - 1) {
@@ -213,14 +224,8 @@ export default function FlashcardsPage() {
 
   const saveReviewResults = async () => {
     try {
-      // Save all the review results
-      for (const [cardId, isCorrect] of Object.entries(userAnswers)) {
-        await reviewFlashcard({
-          flashcardId: cardId as any,
-          isCorrect
-        })
-      }
-      toast.success('Review results saved!')
+      // Results are already saved during the review process
+      toast.success('Review session completed!')
       
       // Reset for next session
       setReviewMode('review')
@@ -229,8 +234,8 @@ export default function FlashcardsPage() {
       setIncorrectCards([])
       setCurrentCardIndex(0)
     } catch (error) {
-      console.error('Error saving review results:', error)
-      toast.error('Failed to save results')
+      console.error('Error completing review session:', error)
+      toast.error('Failed to complete session')
     }
   }
 
@@ -625,7 +630,7 @@ export default function FlashcardsPage() {
                   </div>
                   <div className="mt-6 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
                     <Button onClick={saveReviewResults} className="flex-1">
-                      Save Results & Continue
+                      Continue
                     </Button>
                     {incorrectCards.length > 0 && (
                       <Button onClick={startIncorrectReview} variant="outline" className="flex-1">
