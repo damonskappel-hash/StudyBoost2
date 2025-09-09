@@ -245,8 +245,8 @@ export default function AnalyticsPage() {
             </Card>
           </div>
 
-          {/* Usage Progress */}
-          {usageLimit && (
+          {/* Usage Progress - Only show for free tier users */}
+          {usageLimit && usageLimit.tier === 'free' && (
             <Card className="mb-8">
               <CardHeader>
                 <CardTitle className="flex items-center">
@@ -270,13 +270,51 @@ export default function AnalyticsPage() {
                       "You've reached your monthly limit"
                     }
                   </p>
-                  {usageLimit.tier === 'free' && (
-                    <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 rounded-lg">
-                      <p className="text-sm text-blue-800 dark:text-blue-200">
-                        <strong>Upgrade your plan</strong> to get more AI enhancements per month!
-                      </p>
-                    </div>
-                  )}
+                  <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 rounded-lg">
+                    <p className="text-sm text-blue-800 dark:text-blue-200">
+                      <strong>Upgrade your plan</strong> to get more AI enhancements per month!
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Paid Plan Benefits - Show for paid users */}
+          {usageLimit && (usageLimit.tier === 'student' || usageLimit.tier === 'pro') && (
+            <Card className="mb-8 border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950/50">
+              <CardHeader>
+                <CardTitle className="flex items-center text-green-800 dark:text-green-200">
+                  <CheckCircle className="mr-2 h-5 w-5" />
+                  {usageLimit.tier === 'pro' ? 'Pro Plan' : 'Student Plan'} Benefits
+                </CardTitle>
+                <CardDescription className="text-green-700 dark:text-green-300">
+                  Enjoy unlimited AI enhancements with your paid plan
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
+                    <span className="text-sm text-green-800 dark:text-green-200">
+                      {usageLimit.tier === 'pro' ? '10,000' : '1,000'} AI enhancements per month
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
+                    <span className="text-sm text-green-800 dark:text-green-200">
+                      Priority processing for faster results
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
+                    <span className="text-sm text-green-800 dark:text-green-200">
+                      Access to all premium features
+                    </span>
+                  </div>
+                  <div className="text-xs text-green-700 dark:text-green-300 mt-2">
+                    Current usage: {usageLimit.currentUsage || 0} enhancements this month
+                  </div>
                 </div>
               </CardContent>
             </Card>
