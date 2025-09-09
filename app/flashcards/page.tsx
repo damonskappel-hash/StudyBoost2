@@ -166,7 +166,7 @@ export default function FlashcardsPage() {
           logActivity({ kind: 'review', count: 1 })
         }
       }
-    }, 500) // Wait 500ms for animation to complete
+    }, 800) // Wait 800ms for animation to complete
   }
 
   const handleGenerateFlashcards = async (noteId: any, subject: string) => {
@@ -437,7 +437,7 @@ export default function FlashcardsPage() {
                         {/* Flip Card Container */}
                         <div className="relative w-full h-96 perspective-1000">
                           <div 
-                            className={`relative w-full h-full transition-all duration-500 transform-style-preserve-3d ${
+                            className={`relative w-full h-full transition-all duration-700 transform-style-preserve-3d ${
                               showAnswer ? 'rotate-y-180' : ''
                             } ${
                               cardAnimation === 'correct' ? 'swipe-right' : 
