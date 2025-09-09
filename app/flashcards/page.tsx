@@ -47,6 +47,7 @@ export default function FlashcardsPage() {
   const [userAnswers, setUserAnswers] = useState<Record<string, boolean>>({})
   const [sessionCards, setSessionCards] = useState<any[]>([])
   const [incorrectCards, setIncorrectCards] = useState<any[]>([])
+  const [cardAnimation, setCardAnimation] = useState<'none' | 'correct' | 'incorrect'>('none')
 
   // Get flashcard data - only query when user is authenticated
   const dueFlashcards = useQuery(api.flashcards.getDueFlashcards, 
@@ -129,35 +130,43 @@ export default function FlashcardsPage() {
       toast.error('Failed to save answer')
     }
 
-    if (isCorrect) {
-      // Move to next card if correct
-      if (currentCardIndex < sessionCards.length - 1) {
-        setCurrentCardIndex(currentCardIndex + 1)
-        setShowAnswer(false)
-        toast.success('Correct! Moving to next card.')
+    // Trigger animation
+    setCardAnimation(isCorrect ? 'correct' : 'incorrect')
+
+    // Wait for animation to complete before moving to next card
+    setTimeout(() => {
+      if (isCorrect) {
+        // Move to next card if correct
+        if (currentCardIndex < sessionCards.length - 1) {
+          setCurrentCardIndex(currentCardIndex + 1)
+          setShowAnswer(false)
+          setCardAnimation('none')
+          toast.success('Correct! Moving to next card.')
+        } else {
+          // End of session
+          endReviewSession()
+          toast.success('Review session complete!')
+          // Log activity: review session completion counts as 1
+          logActivity({ kind: 'review', count: 1 })
+        }
       } else {
-        // End of session
-        endReviewSession()
-        toast.success('Review session complete!')
-        // Log activity: review session completion counts as 1
-        await logActivity({ kind: 'review', count: 1 })
+        // If incorrect, add to incorrect cards and move to next
+        setIncorrectCards(prev => [...prev, currentCard])
+        
+        if (currentCardIndex < sessionCards.length - 1) {
+          setCurrentCardIndex(currentCardIndex + 1)
+          setShowAnswer(false)
+          setCardAnimation('none')
+          toast.error('Incorrect. We\'ll review this again at the end!')
+        } else {
+          // End of session
+          endReviewSession()
+          toast.success('Review session complete!')
+          // Log activity: review session completion counts as 1
+          logActivity({ kind: 'review', count: 1 })
+        }
       }
-    } else {
-      // If incorrect, add to incorrect cards and move to next
-      setIncorrectCards(prev => [...prev, currentCard])
-      
-      if (currentCardIndex < sessionCards.length - 1) {
-        setCurrentCardIndex(currentCardIndex + 1)
-        setShowAnswer(false)
-        toast.error('Incorrect. We\'ll review this again at the end!')
-      } else {
-        // End of session
-        endReviewSession()
-        toast.success('Review session complete!')
-        // Log activity: review session completion counts as 1
-        await logActivity({ kind: 'review', count: 1 })
-      }
-    }
+    }, 500) // Wait 500ms for animation to complete
   }
 
   const handleGenerateFlashcards = async (noteId: any, subject: string) => {
@@ -214,6 +223,7 @@ export default function FlashcardsPage() {
     setCurrentCardIndex(0)
     setUserAnswers({})
     setIncorrectCards([])
+    setCardAnimation('none')
     setReviewMode('review')
     setShowAnswer(false)
   }
@@ -244,6 +254,7 @@ export default function FlashcardsPage() {
     setCurrentCardIndex(0)
     setUserAnswers({})
     setIncorrectCards([])
+    setCardAnimation('none')
     setReviewMode('review')
     setShowAnswer(false)
   }
@@ -426,8 +437,11 @@ export default function FlashcardsPage() {
                         {/* Flip Card Container */}
                         <div className="relative w-full h-96 perspective-1000">
                           <div 
-                            className={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d ${
+                            className={`relative w-full h-full transition-all duration-500 transform-style-preserve-3d ${
                               showAnswer ? 'rotate-y-180' : ''
+                            } ${
+                              cardAnimation === 'correct' ? 'swipe-right' : 
+                              cardAnimation === 'incorrect' ? 'swipe-left' : ''
                             }`}
                           >
                             {/* Front of Card (Question) */}

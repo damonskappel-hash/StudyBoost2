@@ -220,6 +220,17 @@
   transform: rotateY(180deg);
 }
 
+/* Swipe animations */
+.swipe-right {
+  transform: translateX(100%) rotate(15deg);
+  opacity: 0;
+}
+
+.swipe-left {
+  transform: translateX(-100%) rotate(-15deg);
+  opacity: 0;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
