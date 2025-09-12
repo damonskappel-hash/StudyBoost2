@@ -327,7 +327,7 @@ export default function AnalyticsPage() {
                     </span>
                   </div>
                   <div className="text-xs text-green-700 dark:text-green-300 mt-2">
-                    Current usage: {usageLimit.currentUsage || 0} enhancements this month
+                    Current usage: {usageLimit?.currentUsage || 0} enhancements this month
                   </div>
                 </div>
               </CardContent>
