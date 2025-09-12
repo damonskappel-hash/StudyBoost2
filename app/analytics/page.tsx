@@ -260,7 +260,7 @@ export default function AnalyticsPage() {
           </div>
 
           {/* Usage Progress - Only show for free tier users */}
-          {actualSubscriptionTier === 'free' && (
+          {actualSubscriptionTier === 'free' && usageLimit && (
             <Card className="mb-8">
               <CardHeader>
                 <CardTitle className="flex items-center">
