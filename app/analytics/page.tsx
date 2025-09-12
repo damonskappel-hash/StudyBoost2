@@ -1,6 +1,6 @@
 'use client'
 
-import { useUser } from '@clerk/nextjs'
+import { useUser, useAuth } from '@clerk/nextjs'
 import { useQuery } from 'convex/react'
 import { api } from '../../convex/_generated/api'
 import { Button } from "@/components/ui/button"
@@ -31,6 +31,7 @@ import { AppLayout } from "@/components/app-layout"
 
 export default function AnalyticsPage() {
   const { user } = useUser()
+  const { has } = useAuth()
   
   // Get user data from Convex
   const convexUser = useQuery(api.users.getUserByClerkId, {
@@ -44,6 +45,19 @@ export default function AnalyticsPage() {
   const usageLimit = useQuery(api.users.checkUsageLimit, {
     clerkUserId: user?.id || ""
   })
+
+  // Check subscription status using Clerk's has() method
+  const hasStudentPlan = has?.({ plan: 'student' })
+  const hasProPlan = has?.({ plan: 'pro' })
+  const hasPremiumPlan = has?.({ plan: 'premium' })
+  
+  // Determine actual subscription tier
+  let actualSubscriptionTier = 'free'
+  if (hasProPlan || hasPremiumPlan) {
+    actualSubscriptionTier = 'pro'
+  } else if (hasStudentPlan) {
+    actualSubscriptionTier = 'student'
+  }
 
   // Calculate analytics data - moved before conditional returns
   const analytics = useMemo(() => {
@@ -246,7 +260,7 @@ export default function AnalyticsPage() {
           </div>
 
           {/* Usage Progress - Only show for free tier users */}
-          {usageLimit && usageLimit.tier === 'free' && (
+          {actualSubscriptionTier === 'free' && (
             <Card className="mb-8">
               <CardHeader>
                 <CardTitle className="flex items-center">
@@ -281,12 +295,12 @@ export default function AnalyticsPage() {
           )}
 
           {/* Paid Plan Benefits - Show for paid users */}
-          {usageLimit && (usageLimit.tier === 'student' || usageLimit.tier === 'pro') && (
+          {(actualSubscriptionTier === 'student' || actualSubscriptionTier === 'pro') && (
             <Card className="mb-8 border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950/50">
               <CardHeader>
                 <CardTitle className="flex items-center text-green-800 dark:text-green-200">
                   <CheckCircle className="mr-2 h-5 w-5" />
-                  {usageLimit.tier === 'pro' ? 'Pro Plan' : 'Student Plan'} Benefits
+                  {actualSubscriptionTier === 'pro' ? 'Pro Plan' : 'Student Plan'} Benefits
                 </CardTitle>
                 <CardDescription className="text-green-700 dark:text-green-300">
                   Enjoy unlimited AI enhancements with your paid plan
@@ -297,7 +311,7 @@ export default function AnalyticsPage() {
                   <div className="flex items-center space-x-2">
                     <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
                     <span className="text-sm text-green-800 dark:text-green-200">
-                      {usageLimit.tier === 'pro' ? '10,000' : '1,000'} AI enhancements per month
+                      {actualSubscriptionTier === 'pro' ? '10,000' : '1,000'} AI enhancements per month
                     </span>
                   </div>
                   <div className="flex items-center space-x-2">
